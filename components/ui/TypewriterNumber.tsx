@@ -7,7 +7,7 @@ interface TypewriterNumberProps {
   prefix?: string;
   suffix?: string;
   className?: string;
-  duration?: number; // total animation duration in ms
+  duration?: number;
 }
 
 export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
@@ -15,9 +15,10 @@ export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
   prefix = "",
   suffix = "",
   className = "",
-  duration = 1800,
+  duration = 1600,
 }) => {
-  const [displayValue, setDisplayValue] = useState("0");
+  // Always initialize with the real value to prevent 0 flashing or SSR discrepancies
+  const [displayValue, setDisplayValue] = useState(value);
   const [hasAnimated, setHasAnimated] = useState(false);
   const elementRef = useRef<HTMLSpanElement>(null);
 
@@ -27,7 +28,6 @@ export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
         if (entries[0].isIntersecting && !hasAnimated) {
           setHasAnimated(true);
 
-          // Extract numeric part vs non-numeric
           const match = value.match(/^([\d,.]+)(.*)$/);
 
           if (match) {
@@ -43,7 +43,6 @@ export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
             const animate = (currentTime: number) => {
               const elapsed = currentTime - startTime;
               const progress = Math.min(elapsed / duration, 1);
-              // Smooth ease-out quad
               const easeOut = 1 - Math.pow(1 - progress, 3);
               const currentNumber = rawNumber * easeOut;
 
@@ -62,10 +61,10 @@ export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
 
             requestAnimationFrame(animate);
           } else {
-            // Text typewriter effect (e.g. "Millions", "Global")
+            // Text character reveal
             let currentIndex = 0;
             const textToType = value;
-            const charDelay = Math.max(50, Math.floor(duration / textToType.length));
+            const charDelay = Math.max(40, Math.floor(duration / textToType.length));
 
             const interval = setInterval(() => {
               currentIndex++;
@@ -77,7 +76,7 @@ export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
           }
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
     const currentEl = elementRef.current;
@@ -93,7 +92,7 @@ export const TypewriterNumber: React.FC<TypewriterNumberProps> = ({
   return (
     <span ref={elementRef} className={`inline-block tabular-nums ${className}`}>
       {prefix}
-      {hasAnimated ? displayValue : "0"}
+      {displayValue}
       {suffix}
     </span>
   );
