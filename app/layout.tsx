@@ -3,6 +3,7 @@ import "./globals.css";
 import { ModalProvider } from "@/components/providers/ModalContext";
 import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollToTop } from "@/components/navigation/ScrollToTop";
 
 export const viewport: Viewport = {
   themeColor: "#0F0624",
@@ -35,6 +36,11 @@ export const metadata: Metadata = {
   authors: [{ name: "ManaVerse Technologies Pvt. Ltd." }],
   creator: "ManaVerse Technologies Pvt. Ltd.",
   publisher: "ManaVerse Technologies Pvt. Ltd.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -65,6 +71,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-[#0F0624] text-white selection:bg-[#FF29D6] selection:text-white antialiased flex flex-col min-h-screen font-sans">
         <ModalProvider>
+          <ScrollToTop />
           <HeaderWrapper />
           <main className="flex-1 w-full">{children}</main>
           <Footer />

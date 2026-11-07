@@ -102,3 +102,4 @@ export const VideoModal: React.FC<VideoModalProps> = ({
     </ModalBackdrop>
   );
 };
+

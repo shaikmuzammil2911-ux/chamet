@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import { TypewriterNumber } from "@/components/ui/TypewriterNumber";
 import {
   ChevronLeft,
   ChevronRight,
@@ -59,6 +60,8 @@ const SLIDES = [
   },
 ];
 
+const SLIDE_DURATION = 3200; // Fast and dynamic auto-sliding (3.2 seconds)
+
 export const HeroSlider: React.FC<HeroSliderProps> = ({
   onOpenVideo,
   onOpenServicesModal,
@@ -80,12 +83,12 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
     setCurrentIndex(index);
   };
 
-  // Automatic slide interval (5 seconds)
+  // Automatic slide interval (3.2 seconds for faster, dynamic transitions)
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       nextSlide();
-    }, 5000);
+    }, SLIDE_DURATION);
     return () => clearInterval(timer);
   }, [isPaused, nextSlide]);
 
@@ -104,10 +107,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
     const minSwipeDistance = 45;
 
     if (diffX > minSwipeDistance) {
-      // Swiped left -> next
       nextSlide();
     } else if (diffX < -minSwipeDistance) {
-      // Swiped right -> prev
       prevSlide();
     }
 
@@ -128,19 +129,19 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
       aria-roledescription="carousel"
       aria-label="ManaVerse Hero Showcase"
     >
-      {/* Background Images with Crossfade & Ken-Burns Zoom Effect */}
+      {/* Background Images with Fast Crossfade & Ken-Burns Zoom Effect */}
       {SLIDES.map((slide, index) => {
         const isActive = index === currentIndex;
         return (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
               isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
             {/* Background Image */}
             <div
-              className={`relative w-full h-full transform transition-transform duration-[6000ms] ease-out ${
+              className={`relative w-full h-full transform transition-transform duration-[4000ms] ease-out ${
                 isActive ? "scale-105" : "scale-100"
               }`}
             >
@@ -156,16 +157,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
             </div>
 
             {/* Gradient Overlays for contrast and readability */}
-            {/* Left dark fade for text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#0F0624] via-[#0F0624]/85 to-transparent lg:w-3/5 pointer-events-none" />
-            
-            {/* Mobile dark vignette to ensure text on top of image is readable */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0F0624] via-[#0F0624]/60 to-transparent lg:hidden pointer-events-none" />
-
-            {/* Bottom blend into the next section */}
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0F0624] to-transparent pointer-events-none" />
-
-            {/* Subtle top shade */}
             <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0F0624]/90 to-transparent pointer-events-none" />
           </div>
         );
@@ -181,20 +175,20 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
               className="space-y-4 sm:space-y-6"
             >
-              {/* Badge: 11 Years of Excellence */}
+              {/* Badge: 11 Years of Excellence with Typing Number */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-purple-900/40 to-amber-500/10 border border-amber-400/40 backdrop-blur-md shadow-lg shadow-amber-950/20">
                 <div className="flex items-center text-brand-gold">
                   <Star className="w-3.5 h-3.5 fill-current" />
                   <Star className="w-3.5 h-3.5 fill-current -ml-1 scale-75" />
                 </div>
                 <span className="text-xs sm:text-sm font-bold tracking-wide text-brand-gold">
-                  11 Years of Excellence
+                  <TypewriterNumber value="11" suffix=" Years of Excellence" duration={1200} />
                 </span>
                 <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-amber-400/60" />
                 <span className="hidden sm:inline-block text-xs font-semibold text-purple-200/90">
@@ -275,7 +269,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
         </button>
       </div>
 
-      {/* Bottom Pagination Indicators */}
+      {/* Bottom Pagination Indicators with Animated Progress Line */}
       <div className="absolute bottom-6 sm:bottom-8 inset-x-0 flex items-center justify-center gap-2.5 z-30">
         {SLIDES.map((slide, idx) => {
           const isActive = idx === currentIndex;
@@ -284,17 +278,36 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
               key={slide.id}
               onClick={() => goToSlide(idx)}
               aria-label={`Go to slide ${idx + 1}`}
-              className={`group relative h-2.5 rounded-full transition-all duration-300 focus:outline-none ${
+              className={`group relative h-2.5 rounded-full overflow-hidden transition-all duration-300 focus:outline-none ${
                 isActive
-                  ? "w-10 bg-gradient-to-r from-brand-gold to-brand-pink shadow-md shadow-brand-pink/50"
-                  : "w-2.5 bg-white/30 hover:bg-white/60"
+                  ? "w-12 bg-white/20 shadow-md shadow-brand-pink/50"
+                  : "w-3 bg-white/30 hover:bg-white/60"
               }`}
             >
+              {isActive && (
+                <div
+                  className="h-full bg-gradient-to-r from-brand-gold to-brand-pink rounded-full transition-all"
+                  style={{
+                    animation: isPaused ? "none" : `slideProgress ${SLIDE_DURATION}ms linear`,
+                  }}
+                />
+              )}
               <span className="sr-only">Slide {idx + 1}</span>
             </button>
           );
         })}
       </div>
+
+      <style jsx>{`
+        @keyframes slideProgress {
+          from {
+            width: 0%;
+          }
+          to {
+            width: 100%;
+          }
+        }
+      `}</style>
     </section>
   );
 };

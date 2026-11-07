@@ -12,3 +12,4 @@ export default function SocialConnectionsPage() {
   const service = SERVICES.find((s) => s.slug === "social-connections")!;
   return <ServiceDetailView service={service} />;
 }
+

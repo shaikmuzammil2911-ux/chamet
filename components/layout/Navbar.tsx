@@ -13,7 +13,6 @@ import {
   ChevronDown,
   Phone,
   MessageCircle,
-  ExternalLink,
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -31,34 +30,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
   // Track window scroll for glassmorphism navbar background
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
+  // Close mobile menu immediately on route change & restore scroll
   useEffect(() => {
     setMobileMenuOpen(false);
     setServicesDropdownOpen(false);
+    document.body.style.overflow = "";
   }, [pathname]);
 
-  // Lock scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    document.body.style.overflow = "";
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prev) => {
+      const nextState = !prev;
+      if (nextState) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+      return nextState;
+    });
+  };
 
   return (
     <>
@@ -192,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
                   variant="gold"
                   size="sm"
                   onClick={onOpenGetStarted}
-                  className="!px-3.5 !py-1.5 !text-xs"
+                  className="!px-3.5 !py-1.5 !text-xs font-bold"
                 >
                   Join Us
                 </Button>
@@ -201,7 +202,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
                   variant="gold"
                   size="sm"
                   href="/contact"
-                  className="!px-3.5 !py-1.5 !text-xs"
+                  className="!px-3.5 !py-1.5 !text-xs font-bold"
                 >
                   Join Us
                 </Button>
@@ -209,7 +210,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
 
               <button
                 type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={toggleMobileMenu}
                 className="p-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-purple"
                 aria-label={mobileMenuOpen ? "Close Menu" : "Open Menu"}
               >
@@ -231,7 +232,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             className="fixed inset-0 z-50 lg:hidden flex flex-col bg-[#0F0624]/98 backdrop-blur-2xl"
           >
             {/* Top Bar inside Drawer */}
@@ -239,7 +240,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
               <ChametLogo size="md" showCompanyName={true} />
               <button
                 type="button"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="p-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors"
                 aria-label="Close Navigation"
               >
@@ -270,7 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            onClick={() => setMobileMenuOpen(false)}
+                            onClick={closeMobileMenu}
                             className="block px-3 py-2 rounded-xl text-sm font-medium text-purple-100 hover:text-white hover:bg-white/10 transition-colors"
                           >
                             <div className="flex items-center justify-between">
@@ -292,7 +293,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
                   <Link
                     key={item.title}
                     href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={closeMobileMenu}
                     className={`block px-4 py-3 rounded-2xl text-base font-bold transition-all ${
                       isActive
                         ? "bg-brand-purple text-white shadow-lg shadow-purple-900/50"
@@ -306,12 +307,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
             </div>
 
             {/* Mobile Drawer Bottom Contacts */}
-            <div className="p-5 border-t border-white/10 space-y-3 bg-[#090216]/80">
+            <div className="p-5 border-t border-white/10 space-y-3 bg-[#090216]/95">
               <div className="grid grid-cols-2 gap-2">
                 <a
                   href={COMPANY.contact.whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={closeMobileMenu}
                   className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#25D366] text-white font-bold text-xs shadow-md"
                 >
                   <MessageCircle className="w-4 h-4" />
@@ -319,6 +321,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
                 </a>
                 <a
                   href={COMPANY.contact.phoneTel}
+                  onClick={closeMobileMenu}
                   className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-md"
                 >
                   <Phone className="w-4 h-4" />
@@ -332,7 +335,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGetStarted }) => {
                   size="md"
                   fullWidth
                   onClick={() => {
-                    setMobileMenuOpen(false);
+                    closeMobileMenu();
                     onOpenGetStarted();
                   }}
                   withArrow

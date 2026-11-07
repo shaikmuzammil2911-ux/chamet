@@ -81,3 +81,4 @@ export const ChametLogo: React.FC<ChametLogoProps> = ({
     </Link>
   );
 };
+

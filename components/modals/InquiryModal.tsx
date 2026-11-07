@@ -275,3 +275,4 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     </ModalBackdrop>
   );
 };
+

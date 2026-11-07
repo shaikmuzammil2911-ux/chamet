@@ -9,21 +9,27 @@
 }
 
 html {
-  scroll-behavior: smooth;
   color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: #0F0624;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  overflow-x: hidden;
+  overflow-x: clip;
   min-height: 100vh;
 }
 
-/* Custom Scrollbar */
+/* Custom Premium Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -31,7 +37,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3B1270;
+  background: #47158A;
   border-radius: 4px;
 }
 
@@ -42,6 +48,21 @@ body {
 ::selection {
   background: #FF29D6;
   color: #FFFFFF;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 5s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

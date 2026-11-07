@@ -12,3 +12,4 @@ export default function EcommercePage() {
   const service = SERVICES.find((s) => s.slug === "e-commerce")!;
   return <ServiceDetailView service={service} />;
 }
+

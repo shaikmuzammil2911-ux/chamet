@@ -21,14 +21,16 @@ export const ModalBackdrop: React.FC<ModalBackdropProps> = ({
   children,
   maxWidth = "2xl",
 }) => {
-  // Lock body scroll when modal is open
+  // Lock body scroll when modal is open and strictly restore on close/unmount
   useEffect(() => {
     if (isOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const prevOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => {
-        document.body.style.overflow = originalStyle;
+        document.body.style.overflow = prevOverflow || "";
       };
+    } else {
+      document.body.style.overflow = "";
     }
   }, [isOpen]);
 
@@ -66,7 +68,7 @@ export const ModalBackdrop: React.FC<ModalBackdropProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             onClick={onClose}
             className="fixed inset-0 bg-[#0A0318]/85 backdrop-blur-md"
           />
@@ -76,7 +78,7 @@ export const ModalBackdrop: React.FC<ModalBackdropProps> = ({
             initial={{ opacity: 0, scale: 0.94, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 16 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            transition={{ type: "spring", damping: 25, stiffness: 350 }}
             onClick={(e) => e.stopPropagation()}
             className={`
               relative w-full ${maxWidthClasses[maxWidth]}

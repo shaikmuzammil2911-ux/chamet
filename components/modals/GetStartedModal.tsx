@@ -159,3 +159,4 @@ export const GetStartedModal: React.FC<GetStartedModalProps> = ({
     </ModalBackdrop>
   );
 };
+

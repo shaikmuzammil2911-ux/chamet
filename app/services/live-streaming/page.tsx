@@ -12,3 +12,4 @@ export default function LiveStreamingPage() {
   const service = SERVICES.find((s) => s.slug === "live-streaming")!;
   return <ServiceDetailView service={service} />;
 }
+

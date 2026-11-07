@@ -12,3 +12,4 @@ export default function PlayroomsGamesPage() {
   const service = SERVICES.find((s) => s.slug === "playrooms-games")!;
   return <ServiceDetailView service={service} />;
 }
+

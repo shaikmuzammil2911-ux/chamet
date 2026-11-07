@@ -2,10 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { COMPANY } from "@/data/company";
+import { TypewriterNumber } from "@/components/ui/TypewriterNumber";
 import {
   Sparkles,
   Eye,
@@ -43,7 +43,11 @@ export const AboutSection: React.FC = () => {
 
             {/* Description */}
             <p className="text-purple-100/90 text-sm sm:text-base lg:text-lg leading-relaxed">
-              {COMPANY.description}
+              ManaVerse Technologies Pvt. Ltd. has{" "}
+              <strong className="text-brand-gold font-bold">
+                <TypewriterNumber value="11" suffix=" Years" duration={1200} />
+              </strong>{" "}
+              of experience in delivering innovative digital entertainment and earning opportunities. Our mission is to create a safe, secure, and reliable platform, especially for women hosts and individuals who need financial support.
             </p>
 
             {/* Core Mission Highlight Box */}
@@ -67,7 +71,9 @@ export const AboutSection: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <div className="flex items-center gap-2 text-xs sm:text-sm text-purple-100">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>11 Years of Digital Entertainment Expertise</span>
+                <span>
+                  <TypewriterNumber value="11" suffix="+" duration={1000} /> Years of Entertainment Excellence
+                </span>
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-purple-100">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -142,7 +148,9 @@ export const AboutSection: React.FC = () => {
             {/* Experience Badge Banner */}
             <div className="p-4 rounded-2xl bg-gradient-to-r from-[#26005F] to-[#140B79] border border-white/10 flex items-center justify-between">
               <div>
-                <div className="text-2xl font-black text-white">11+ Years</div>
+                <div className="text-2xl font-black text-white">
+                  <TypewriterNumber value="11" suffix="+ Years" duration={1200} />
+                </div>
                 <div className="text-xs text-purple-200/80">Of Innovation & Community Trust</div>
               </div>
               <Link

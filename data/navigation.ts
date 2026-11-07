@@ -68,3 +68,4 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/contact",
   },
 ];
+

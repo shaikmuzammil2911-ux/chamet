@@ -95,3 +95,4 @@ export const TEAM_MEMBERS: TeamMember[] = [
     avatarColor: "from-violet-600 to-blue-600",
   },
 ];
+

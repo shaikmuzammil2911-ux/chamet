@@ -295,3 +295,4 @@ export const CareerModal: React.FC<CareerModalProps> = ({
     </ModalBackdrop>
   );
 };
+

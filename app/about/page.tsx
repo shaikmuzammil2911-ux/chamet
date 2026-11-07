@@ -7,6 +7,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { StatsBanner } from "@/components/sections/StatsBanner";
 import { useModals } from "@/components/providers/ModalContext";
+import { TypewriterNumber } from "@/components/ui/TypewriterNumber";
 import {
   Sparkles,
   Trophy,
@@ -74,7 +75,9 @@ export default function AboutPage() {
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-purple/20 border border-brand-purple/40 text-purple-200 text-xs font-bold backdrop-blur-md">
             <Trophy className="w-3.5 h-3.5 text-brand-gold" />
-            <span>11 Years of Corporate Excellence</span>
+            <span>
+              <TypewriterNumber value="11" suffix=" Years of Corporate Excellence" duration={1200} />
+            </span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
@@ -98,7 +101,11 @@ export default function AboutPage() {
               Our Journey & Purpose
             </h2>
             <p className="text-purple-200/90 text-sm sm:text-base leading-relaxed">
-              With 11 years of deep experience in digital media, live streaming systems, and social networking dynamics, ManaVerse Technologies Pvt. Ltd. has shaped platforms where human warmth meets digital entertainment.
+              With{" "}
+              <strong className="text-brand-gold font-bold">
+                <TypewriterNumber value="11" suffix=" years" duration={1200} />
+              </strong>{" "}
+              of deep experience in digital media, live streaming systems, and social networking dynamics, ManaVerse Technologies Pvt. Ltd. has shaped platforms where human warmth meets digital entertainment.
             </p>
             <p className="text-purple-200/90 text-sm sm:text-base leading-relaxed">
               Our flagship brand, <strong className="text-brand-pink">Chamet</strong>, serves as an inclusive global stage. Whether an individual is broadcasting their musical talents, hosting a 12-seat late-night audio party, playing games with friends, or meeting verified companions, ManaVerse delivers high-fidelity social engagement.
@@ -125,7 +132,10 @@ export default function AboutPage() {
                 <li className="flex items-start gap-3 text-xs sm:text-sm text-purple-100/90">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>11 Years Proven Stability:</strong> Long-standing operational excellence and trusted creator relationships.
+                    <strong>
+                      <TypewriterNumber value="11" suffix="+" duration={1000} /> Years Proven Stability:
+                    </strong>{" "}
+                    Long-standing operational excellence and trusted creator relationships.
                   </span>
                 </li>
                 <li className="flex items-start gap-3 text-xs sm:text-sm text-purple-100/90">

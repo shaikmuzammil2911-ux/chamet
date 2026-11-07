@@ -103,3 +103,4 @@ export const TeamModal: React.FC<TeamModalProps> = ({
     </ModalBackdrop>
   );
 };
+

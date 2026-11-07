@@ -37,3 +37,4 @@ export default function DynamicServicePage({ params }: ServicePageProps) {
 
   return <ServiceDetailView service={service} />;
 }
+

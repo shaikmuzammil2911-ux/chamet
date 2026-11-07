@@ -9,3 +9,4 @@ export const HeaderWrapper: React.FC = () => {
 
   return <Navbar onOpenGetStarted={openGetStarted} />;
 };
+

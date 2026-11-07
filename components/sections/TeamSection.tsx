@@ -170,3 +170,4 @@ export const TeamSection: React.FC<TeamSectionProps> = ({
     </section>
   );
 };
+

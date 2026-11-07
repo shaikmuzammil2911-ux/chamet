@@ -6,6 +6,7 @@ import { ServiceItem } from "@/data/services";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { useModals } from "@/components/providers/ModalContext";
+import { TypewriterNumber } from "@/components/ui/TypewriterNumber";
 import {
   CheckCircle2,
   ArrowLeft,
@@ -108,13 +109,13 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </div>
       </section>
 
-      {/* Stats Grid */}
+      {/* Stats Grid with Typewriter numbers */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {service.stats.map((st, i) => (
             <GlassCard key={i} glowColor="purple" className="p-6 text-center">
               <span className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-brand-gold">
-                {st.value}
+                <TypewriterNumber value={st.value} duration={1400} />
               </span>
               <span className="text-xs sm:text-sm font-semibold text-purple-200/80 block mt-1">
                 {st.label}
