@@ -10,12 +10,7 @@
 
 html {
   color-scheme: dark;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html:focus-within {
-    scroll-behavior: smooth;
-  }
+  /* Do not use global scroll-behavior: smooth here to prevent route-transition stutter */
 }
 
 body {

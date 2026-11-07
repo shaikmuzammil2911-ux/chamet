@@ -308,3 +308,4 @@ export const ChametShowcaseSlider: React.FC<ChametShowcaseSliderProps> = ({
     </section>
   );
 };
+

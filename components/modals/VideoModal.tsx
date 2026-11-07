@@ -14,6 +14,7 @@ import {
   Users,
   ShieldCheck,
   RotateCcw,
+  Film,
 } from "lucide-react";
 
 interface VideoModalProps {
@@ -27,131 +28,267 @@ export const VideoModal: React.FC<VideoModalProps> = ({
   onClose,
   onExploreServices,
 }) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(15);
-  const [currentTime, setCurrentTime] = useState("0:18");
-  const totalDuration = "2:15";
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [volume, setVolume] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Stop playback when modal closes
+  // Stop and reset playback whenever modal closes
   useEffect(() => {
     if (!isOpen) {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
       setIsPlaying(false);
-      if (timerRef.current) clearInterval(timerRef.current);
+      setCurrentTime(0);
+    } else {
+      setHasError(false);
+      setIsLoading(true);
     }
   }, [isOpen]);
 
-  // Simulate progress when playing
+  // Keyboard shortcut listener (Space to play/pause, Esc to close)
   useEffect(() => {
-    if (isPlaying) {
-      timerRef.current = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            setIsPlaying(false);
-            return 0;
-          }
-          const next = prev + 1;
-          const seconds = Math.floor((next / 100) * 135);
-          const mins = Math.floor(seconds / 60);
-          const secs = seconds % 60;
-          setCurrentTime(`${mins}:${secs < 10 ? "0" : ""}${secs}`);
-          return next;
-        });
-      }, 500);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      if (e.code === "Space" && e.target === document.body) {
+        e.preventDefault();
+        togglePlay();
+      }
     };
-  }, [isPlaying]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, isPlaying]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setHasError(true));
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration || 0);
+      setIsLoading(false);
+    }
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = parseFloat(e.target.value);
+    setCurrentTime(time);
+    if (videoRef.current) {
+      videoRef.current.currentTime = time;
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    videoRef.current.muted = newMuted;
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const vol = parseFloat(e.target.value);
+    setVolume(vol);
+    if (videoRef.current) {
+      videoRef.current.volume = vol;
+      videoRef.current.muted = vol === 0;
+      setIsMuted(vol === 0);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!containerRef.current) return;
+    if (!document.fullscreenElement) {
+      containerRef.current.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  const formatTime = (timeInSeconds: number) => {
+    if (isNaN(timeInSeconds)) return "0:00";
+    const mins = Math.floor(timeInSeconds / 60);
+    const secs = Math.floor(timeInSeconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   return (
     <ModalBackdrop
       isOpen={isOpen}
       onClose={onClose}
       title="Discover ManaVerse & Chamet"
-      badge="Official Platform Showcase"
+      badge="Official Media Showcase"
       maxWidth="3xl"
     >
-      <div className="space-y-5">
-        {/* Cinematic Video Player Container */}
-        <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#0A0216] border border-purple-500/30 flex items-center justify-center group shadow-2xl">
-          {/* Animated Ambient background */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#8500FF]/50 via-[#176BFF]/30 to-[#FF29D6]/40 animate-pulse-slow" />
+      <div className="space-y-4">
+        {/* Real HTML5 Video Player Container */}
+        <div
+          ref={containerRef}
+          className="relative aspect-video rounded-2xl overflow-hidden bg-black border border-purple-500/40 flex items-center justify-center group shadow-2xl"
+        >
+          {/* Video Element */}
+          <video
+            ref={videoRef}
+            src="/videos/chamet-showcase.mp4"
+            playsInline
+            preload="metadata"
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={() => setIsPlaying(false)}
+            onError={() => setHasError(true)}
+            onClick={togglePlay}
+            className="w-full h-full object-contain cursor-pointer"
+          />
 
-          {/* Central Play/Pause Button and Brand Preview */}
-          <div className="relative z-10 flex flex-col items-center text-center p-6 max-w-md">
-            <button
-              type="button"
-              onClick={() => setIsPlaying(!isPlaying)}
-              aria-label={isPlaying ? "Pause Video" : "Play Video"}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-[#FFC83D] to-[#FFA751] flex items-center justify-center text-[#26005F] shadow-2xl shadow-amber-500/50 transform hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-amber-400/50"
+          {/* Big Play Overlay (when paused) */}
+          {!isPlaying && !hasError && (
+            <div
+              onClick={togglePlay}
+              className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex flex-col items-center justify-center cursor-pointer transition-opacity z-10"
             >
-              {isPlaying ? (
-                <Pause className="w-8 h-8 sm:w-10 sm:h-10 fill-current" />
-              ) : (
+              <button
+                type="button"
+                aria-label="Play Video"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-[#FFC83D] to-[#FFA751] flex items-center justify-center text-[#26005F] shadow-2xl shadow-amber-500/60 transform hover:scale-110 active:scale-95 transition-all duration-300"
+              >
                 <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-current translate-x-0.5" />
-              )}
-            </button>
-
-            <h4 className="text-lg sm:text-xl font-extrabold text-white mt-4 drop-shadow-md">
-              {isPlaying ? "Playing: Chamet Global Media Showcase" : "11 Years of Digital Entertainment"}
-            </h4>
-            <p className="text-xs sm:text-sm text-purple-200/90 mt-1 max-w-sm">
-              Discover how ManaVerse connects millions with live streaming, 3D interactive party rooms, and verified host earnings.
-            </p>
-          </div>
-
-          {/* Bottom Interactive Video Controls Bar */}
-          <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/80 to-transparent flex flex-col gap-2 z-20">
-            {/* Progress Scrubber */}
-            <div className="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative">
-              <div
-                className="bg-gradient-to-r from-brand-gold to-brand-pink h-full rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
+              </button>
+              <span className="text-white text-xs sm:text-sm font-bold mt-3 drop-shadow-md">
+                Click to Watch Platform Showcase
+              </span>
             </div>
+          )}
 
-            {/* Controls row */}
-            <div className="flex items-center justify-between text-xs text-purple-200">
+          {/* Error fallback state */}
+          {hasError && (
+            <div className="absolute inset-0 bg-[#0F0624] flex flex-col items-center justify-center p-6 text-center z-10">
+              <Film className="w-10 h-10 text-brand-pink mb-2" />
+              <p className="text-sm font-bold text-white">Chamet Video Media Ready</p>
+              <p className="text-xs text-purple-200/70 mt-1 max-w-sm">
+                Place any company video in <code className="text-brand-gold">public/videos/chamet-showcase.mp4</code>.
+              </p>
+              <Button
+                variant="purple"
+                size="sm"
+                className="mt-3"
+                onClick={() => {
+                  setHasError(false);
+                  videoRef.current?.load();
+                }}
+              >
+                Retry Playback
+              </Button>
+            </div>
+          )}
+
+          {/* Player Controls Bar */}
+          <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/95 via-black/80 to-transparent flex flex-col gap-2 z-20">
+            {/* Progress Scrubber */}
+            <input
+              type="range"
+              min={0}
+              max={duration || 100}
+              step={0.1}
+              value={currentTime}
+              onChange={handleSeek}
+              aria-label="Video seek bar"
+              className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-brand-gold"
+            />
+
+            {/* Controls Row */}
+            <div className="flex items-center justify-between text-xs text-white">
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="hover:text-white transition-colors"
+                  onClick={togglePlay}
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                  className="hover:text-brand-gold transition-colors p-1"
                 >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  {isPlaying ? (
+                    <Pause className="w-4 h-4 fill-current" />
+                  ) : (
+                    <Play className="w-4 h-4 fill-current" />
+                  )}
                 </button>
+
                 <button
                   type="button"
                   onClick={() => {
-                    setProgress(0);
-                    setCurrentTime("0:00");
+                    if (videoRef.current) videoRef.current.currentTime = 0;
                   }}
-                  className="hover:text-white transition-colors"
-                  title="Replay"
+                  aria-label="Replay"
+                  className="hover:text-brand-gold transition-colors p-1"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setIsMuted(!isMuted)}
-                  className="hover:text-white transition-colors"
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4" />}
-                </button>
-                <span className="text-[11px] font-mono text-purple-300">
-                  {currentTime} / {totalDuration}
+
+                {/* Volume & Mute */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={toggleMute}
+                    aria-label={isMuted ? "Unmute" : "Mute"}
+                    className="hover:text-brand-gold transition-colors p-1"
+                  >
+                    {isMuted || volume === 0 ? (
+                      <VolumeX className="w-4 h-4 text-rose-400" />
+                    ) : (
+                      <Volume2 className="w-4 h-4" />
+                    )}
+                  </button>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    value={isMuted ? 0 : volume}
+                    onChange={handleVolumeChange}
+                    aria-label="Volume slider"
+                    className="w-14 sm:w-20 h-1 bg-white/20 rounded-full appearance-none cursor-pointer accent-white"
+                  />
+                </div>
+
+                {/* Time Display */}
+                <span className="text-[11px] font-mono text-purple-200">
+                  {formatTime(currentTime)} / {formatTime(duration)}
                 </span>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1.5 font-semibold text-xs">
-                  <Radio className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
-                  Official Chamet HD Media
+              <div className="flex items-center gap-3">
+                <span className="hidden sm:flex items-center gap-1.5 text-[11px] font-semibold text-purple-200">
+                  <Radio className="w-3 h-3 text-rose-400 animate-pulse" />
+                  HD 1080p
                 </span>
+                <button
+                  type="button"
+                  onClick={toggleFullscreen}
+                  aria-label="Fullscreen"
+                  className="hover:text-brand-gold transition-colors p-1"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
@@ -183,28 +320,23 @@ export const VideoModal: React.FC<VideoModalProps> = ({
         </div>
 
         {/* Footer controls */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/10">
-          <span className="text-[11px] text-purple-300/70">
-            Note: Place your company MP4 in <code className="text-purple-200">public/videos/</code> anytime to link custom media.
-          </span>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={onClose}>
-              Close
+        <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/10">
+          <Button variant="outline" size="sm" onClick={onClose}>
+            Close
+          </Button>
+          {onExploreServices && (
+            <Button
+              variant="gold"
+              size="sm"
+              onClick={() => {
+                onClose();
+                onExploreServices();
+              }}
+              withArrow
+            >
+              Explore Services
             </Button>
-            {onExploreServices && (
-              <Button
-                variant="gold"
-                size="sm"
-                onClick={() => {
-                  onClose();
-                  onExploreServices();
-                }}
-                withArrow
-              >
-                Explore Services
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </ModalBackdrop>
