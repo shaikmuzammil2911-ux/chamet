@@ -120,7 +120,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
 
   return (
     <section
-      className="relative w-full min-h-[92vh] lg:min-h-screen flex items-center overflow-hidden pt-20 pb-16 lg:py-0 select-none"
+      className="relative w-full min-h-[92vh] lg:min-h-screen flex items-center overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24 select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}

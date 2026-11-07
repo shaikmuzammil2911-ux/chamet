@@ -1,15 +1,12 @@
-import { SERVICES } from "@/data/services";
-import { ServiceDetailView } from "@/components/services/ServiceDetailView";
 import { Metadata } from "next";
+import { LiveExperienceView } from "@/components/services/LiveExperienceView";
 
 export const metadata: Metadata = {
-  title: "Live Streaming | Real-Time Broadcasting & Host Earnings",
+  title: "Chamet Live Experience | Top Agencies, Creator Stories & Live Broadcasting",
   description:
-    "Ultra-low latency HD video streaming, virtual 3D gifts, PK battles, and sustainable earning opportunities for creators and women hosts worldwide.",
+    "Discover leading agencies empowering creators on Chamet. Explore active broadcaster guilds, inspiring success stories, and verified live host earning opportunities.",
 };
 
 export default function LiveStreamingPage() {
-  const service = SERVICES.find((s) => s.slug === "live-streaming")!;
-  return <ServiceDetailView service={service} />;
+  return <LiveExperienceView />;
 }
-
