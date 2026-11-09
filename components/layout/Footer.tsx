@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChametLogo } from "@/components/ui/ChametLogo";
 import { COMPANY } from "@/data/company";
 import { SERVICES } from "@/data/services";
@@ -16,6 +17,13 @@ import {
 } from "lucide-react";
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
+
+  // Hide public footer on admin panel pages
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   const socialLinks = [
     {
       name: "Facebook",

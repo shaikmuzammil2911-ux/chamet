@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { TEAM_MEMBERS, TEAM_DEPARTMENTS, TeamMember } from "@/data/team";
+import { cmsService } from "@/lib/cms";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { TeamModal } from "@/components/modals/TeamModal";
 import { Button } from "@/components/ui/Button";
@@ -31,10 +32,20 @@ export const TeamSection: React.FC<TeamSectionProps> = ({
   isFullPage = false,
   onOpenInquiry,
 }) => {
+  const [members, setMembers] = useState<TeamMember[]>(TEAM_MEMBERS);
   const [selectedDept, setSelectedDept] = useState<string>("All Leadership");
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
-  const displayedMembers = TEAM_MEMBERS.filter((m) => {
+  // Live Supabase Sync
+  useEffect(() => {
+    cmsService.getTeamMembers().then((liveMembers) => {
+      if (liveMembers && liveMembers.length > 0) {
+        setMembers(liveMembers);
+      }
+    });
+  }, []);
+
+  const displayedMembers = members.filter((m) => {
     if (selectedDept === "All Leadership") return true;
     if (selectedDept === "Executive Leadership") {
       return m.department === "Executive Leadership";

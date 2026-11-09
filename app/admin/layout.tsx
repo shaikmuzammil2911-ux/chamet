@@ -224,11 +224,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             >
               <MenuIcon className="w-5 h-5" />
             </button>
-            <div className="hidden sm:block">
-              <div className="text-sm font-black text-white">
+            <div>
+              <div className="text-sm font-black text-white leading-tight">
                 ManaVerse Administration Console
               </div>
-              <div className="text-[11px] text-purple-300">
+              <div className="text-[10px] sm:text-[11px] text-purple-300 leading-tight">
                 Live Supabase Synchronization Active
               </div>
             </div>
@@ -272,3 +272,4 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
+

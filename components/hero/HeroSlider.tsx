@@ -15,6 +15,7 @@ import {
   Award,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cmsService } from "@/lib/cms";
 
 interface HeroSliderProps {
   onOpenVideo?: () => void;
@@ -66,18 +67,28 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
   onOpenVideo,
   onOpenServicesModal,
 }) => {
+  const [slides, setSlides] = useState(SLIDES);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
+  // Sync slides with Supabase CMS
+  useEffect(() => {
+    cmsService.getHeroSlides().then((liveSlides) => {
+      if (liveSlides && liveSlides.length > 0) {
+        setSlides(liveSlides as any);
+      }
+    });
   }, []);
 
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
-  }, []);
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
@@ -116,7 +127,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
     touchEndX.current = null;
   };
 
-  const currentSlide = SLIDES[currentIndex];
+  const currentSlide = slides[currentIndex] || slides[0];
 
   return (
     <section
@@ -130,7 +141,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
       aria-label="ManaVerse Hero Showcase"
     >
       {/* Background Images with Fast Crossfade & Ken-Burns Zoom Effect */}
-      {SLIDES.map((slide, index) => {
+      {slides.map((slide, index) => {
         const isActive = index === currentIndex;
         return (
           <div
@@ -271,7 +282,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
 
       {/* Bottom Pagination Indicators with Animated Progress Line */}
       <div className="absolute bottom-6 sm:bottom-8 inset-x-0 flex items-center justify-center gap-2.5 z-30">
-        {SLIDES.map((slide, idx) => {
+        {slides.map((slide, idx) => {
           const isActive = idx === currentIndex;
           return (
             <button

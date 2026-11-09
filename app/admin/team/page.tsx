@@ -409,9 +409,53 @@ export default function AdminTeamPage() {
                 />
               </div>
 
-              {/* Photo Upload via Cloudinary */}
+              {/* Photo Upload via Cloudinary & Visual Preview */}
               <div>
-                <label className="block font-bold text-purple-200 mb-1">Portrait Photo (Cloudinary)</label>
+                <label className="block font-bold text-purple-200 mb-1.5">
+                  Portrait Photo (Cloudinary)
+                </label>
+
+                {/* Photo Preview Card */}
+                {editingMember.image ? (
+                  <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-purple-950/60 border border-purple-500/30 mb-3 shadow-inner">
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-brand-pink/50 shrink-0 bg-black">
+                      <img
+                        src={editingMember.image}
+                        alt="Member Preview"
+                        className="w-full h-full object-cover object-top"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = "/images/team/koteswarao.png";
+                        }}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-black text-white truncate">
+                          {editingMember.name || "Member Portrait"}
+                        </span>
+                        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                          Ready
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-purple-300 font-mono truncate">
+                        {editingMember.image}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setEditingMember({ ...editingMember, image: "" })}
+                      className="text-xs font-bold text-rose-300 hover:text-white bg-rose-500/20 hover:bg-rose-500/50 px-2.5 py-1.5 rounded-xl shrink-0 transition-colors"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-full h-20 rounded-2xl border-2 border-dashed border-purple-500/30 bg-purple-950/20 flex flex-col items-center justify-center text-purple-400 text-xs mb-3">
+                    <Upload className="w-4 h-4 mb-1 text-purple-400" />
+                    <span>No photo selected. Upload or paste a URL below.</span>
+                  </div>
+                )}
+
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
@@ -419,11 +463,12 @@ export default function AdminTeamPage() {
                     onChange={(e) =>
                       setEditingMember({ ...editingMember, image: e.target.value })
                     }
-                    className="flex-1 px-3.5 py-2 rounded-xl bg-black/40 border border-purple-500/30 text-white"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/40 border border-purple-500/30 text-white text-xs"
+                    placeholder="https://res.cloudinary.com/... or /images/..."
                   />
-                  <label className="px-3 py-2 rounded-xl bg-purple-900/40 border border-purple-400/30 text-purple-200 hover:text-white cursor-pointer flex items-center gap-1.5 shrink-0">
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>{uploadingImage ? "Uploading..." : "Upload"}</span>
+                  <label className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-700 to-brand-pink text-white hover:opacity-90 cursor-pointer flex items-center gap-2 shrink-0 font-bold text-xs shadow-md transition-all">
+                    <Upload className="w-4 h-4" />
+                    <span>{uploadingImage ? "Uploading..." : "Upload New"}</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -456,3 +501,4 @@ export default function AdminTeamPage() {
     </div>
   );
 }
+

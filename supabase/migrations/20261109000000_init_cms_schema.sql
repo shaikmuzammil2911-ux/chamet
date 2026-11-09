@@ -527,3 +527,4 @@ CREATE POLICY "Admin Full Access SEO" ON public.seo_metadata FOR ALL USING (true
 CREATE POLICY "Admin Full Access Legal Pages" ON public.legal_pages FOR ALL USING (true);
 CREATE POLICY "Admin Full Access Admin Profiles" ON public.admin_profiles FOR ALL USING (true);
 CREATE POLICY "Admin Full Access Activity Logs" ON public.admin_activity_logs FOR ALL USING (true);
+

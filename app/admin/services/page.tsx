@@ -356,9 +356,49 @@ export default function AdminServicesPage() {
                 </div>
               </div>
 
-              {/* Cloudinary Image Upload */}
+              {/* Cloudinary Image Upload & Visual Preview */}
               <div>
-                <label className="block font-bold text-purple-200 mb-1">Cover / Hero Image (Cloudinary)</label>
+                <label className="block font-bold text-purple-200 mb-1.5">
+                  Cover / Hero Image (Cloudinary)
+                </label>
+
+                {/* Live Image Preview Thumbnail */}
+                {editingService.heroImage ? (
+                  <div className="relative w-full h-40 sm:h-48 rounded-2xl overflow-hidden border border-purple-500/30 bg-purple-950/60 mb-3 group shadow-inner">
+                    <img
+                      src={editingService.heroImage}
+                      alt="Service Visual Preview"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/images/hero/hero-slide-1.png";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 flex flex-col justify-between p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-brand-gold bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-brand-gold/30 flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-brand-gold" />
+                          <span>Active Preview</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setEditingService({ ...editingService, heroImage: "" })}
+                          className="text-xs font-bold text-rose-300 hover:text-white bg-rose-500/30 hover:bg-rose-500/60 px-2.5 py-1 rounded-xl transition-colors"
+                        >
+                          Clear
+                        </button>
+                      </div>
+                      <div className="text-[11px] text-purple-200 font-mono truncate bg-black/60 px-2 py-0.5 rounded">
+                        {editingService.heroImage}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-24 rounded-2xl border-2 border-dashed border-purple-500/30 bg-purple-950/20 flex flex-col items-center justify-center text-purple-400 text-xs mb-3">
+                    <Upload className="w-5 h-5 mb-1 text-purple-400" />
+                    <span>No image selected. Upload or paste a URL below.</span>
+                  </div>
+                )}
+
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
@@ -366,12 +406,12 @@ export default function AdminServicesPage() {
                     onChange={(e) =>
                       setEditingService({ ...editingService, heroImage: e.target.value })
                     }
-                    placeholder="https://res.cloudinary.com/..."
-                    className="flex-1 px-3.5 py-2 rounded-xl bg-black/40 border border-purple-500/30 text-white"
+                    placeholder="https://res.cloudinary.com/... or /images/..."
+                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/40 border border-purple-500/30 text-white text-xs"
                   />
-                  <label className="px-3 py-2 rounded-xl bg-purple-900/40 border border-purple-400/30 text-purple-200 hover:text-white cursor-pointer flex items-center gap-1.5 shrink-0">
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>{uploadingImage ? "Uploading..." : "Upload"}</span>
+                  <label className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-700 to-brand-pink text-white hover:opacity-90 cursor-pointer flex items-center gap-2 shrink-0 font-bold text-xs shadow-md transition-all">
+                    <Upload className="w-4 h-4" />
+                    <span>{uploadingImage ? "Uploading..." : "Upload New"}</span>
                     <input
                       type="file"
                       accept="image/*"

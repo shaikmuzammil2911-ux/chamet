@@ -357,3 +357,4 @@ VALUES
 ('Our Team', '/team', '[]'::jsonb, TRUE, 5),
 ('Careers', '/careers', '[]'::jsonb, TRUE, 6),
 ('Contact', '/contact', '[]'::jsonb, TRUE, 7);
+

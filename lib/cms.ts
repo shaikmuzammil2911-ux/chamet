@@ -245,4 +245,33 @@ export const cmsService = {
       return null;
     }
   },
+
+  // 8. Hero Slides with Live Supabase sync
+  async getHeroSlides() {
+    try {
+      const { data, error } = await supabase
+        .from("home_hero_slides")
+        .select("*")
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+
+      if (error || !data || data.length === 0) {
+        return null;
+      }
+
+      return data.map((item: any, idx: number) => ({
+        id: item.display_order || idx + 1,
+        image: item.image_url || "/images/hero/hero-slide-1.png",
+        alt: `${item.title || "ManaVerse"} ${item.highlight_text || ""}`,
+        slideBadge: item.slide_badge || "Live Interactive Broadcasting",
+        headingHighlight: item.highlight_text || "Technologies Pvt. Ltd.",
+        subTitleTag: item.sub_title_tag || "Play • Connect • Earn • Grow",
+        description: item.description || "",
+        ctaText: item.cta_text || "Explore Services",
+        featurePill: item.slide_badge || "Top Ranked Platform",
+      }));
+    } catch {
+      return null;
+    }
+  },
 };

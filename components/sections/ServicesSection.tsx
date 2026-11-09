@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SERVICES, ServiceItem } from "@/data/services";
+import { cmsService } from "@/lib/cms";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ServiceModal } from "@/components/modals/ServiceModal";
 import {
@@ -24,7 +25,17 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   onOpenInquiry,
   showSectionHeader = true,
 }) => {
+  const [services, setServices] = useState<ServiceItem[]>(SERVICES);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+
+  // Live Supabase Sync
+  useEffect(() => {
+    cmsService.getServices().then((liveServices) => {
+      if (liveServices && liveServices.length > 0) {
+        setServices(liveServices);
+      }
+    });
+  }, []);
 
   const getServiceIcon = (id: string) => {
     switch (id) {
@@ -107,9 +118,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           </div>
         )}
 
-        {/* 4 Cards Grid */}
+        {/* Services Cards Grid with Live Sync */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SERVICES.map((service) => {
+          {services.map((service) => {
             const Icon = getServiceIcon(service.id);
             const style = getCardStyle(service.id);
 

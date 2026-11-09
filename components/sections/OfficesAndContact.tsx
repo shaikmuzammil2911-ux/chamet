@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { COMPANY } from "@/data/company";
+import { cmsService } from "@/lib/cms";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import {
@@ -24,6 +25,15 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
   onOpenInquiry,
   onOpenGetStarted,
 }) => {
+  const [contact, setContact] = useState(COMPANY.contact);
+
+  useEffect(() => {
+    cmsService.getSiteSettings().then((settings) => {
+      if (settings && settings.contact) {
+        setContact(settings.contact);
+      }
+    });
+  }, []);
   return (
     <section className="py-16 sm:py-24 relative overflow-hidden">
       {/* Background glow */}
@@ -120,7 +130,7 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 {/* Phone Call */}
                 <a
-                  href={COMPANY.contact.phoneTel}
+                  href={contact.phoneTel}
                   className="p-3.5 rounded-2xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 hover:border-purple-400/40 flex items-center gap-3 transition-all group"
                 >
                   <div className="w-10 h-10 rounded-xl bg-purple-600/40 text-purple-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
@@ -129,14 +139,14 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
                   <div>
                     <div className="text-[11px] text-purple-300 font-medium">Direct Call</div>
                     <div className="text-sm font-bold text-white tracking-wide">
-                      {COMPANY.contact.phone}
+                      {contact.phone}
                     </div>
                   </div>
                 </a>
 
                 {/* WhatsApp Chat */}
                 <a
-                  href={COMPANY.contact.whatsappLink}
+                  href={contact.whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3.5 rounded-2xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 flex items-center gap-3 transition-all group"
@@ -147,7 +157,7 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
                   <div>
                     <div className="text-[11px] text-emerald-300 font-medium">Chat on WhatsApp</div>
                     <div className="text-sm font-bold text-white tracking-wide">
-                      {COMPANY.contact.whatsapp}
+                      {contact.whatsapp}
                     </div>
                   </div>
                 </a>
@@ -155,7 +165,7 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
 
               <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
                 <span className="text-xs text-purple-300/80">
-                  Email: {COMPANY.contact.email}
+                  Email: {contact.email}
                 </span>
                 {onOpenInquiry && (
                   <button
