@@ -1,15 +1,30 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Sparkles, Radio, Star, Heart, Users, ChevronLeft, ChevronRight } from "lucide-react";
-import { GlassCard } from "@/components/ui/GlassCard";
+import Image from "next/image";
+import { Sparkles, Radio, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { cmsService } from "@/lib/cms";
 
 interface CreatorStreamBannerProps {
   onOpenInquiry?: (subject?: string) => void;
   onOpenGetStarted?: () => void;
 }
 
-const FEATURED_CREATORS = [
+interface CreatorItem {
+  id: string;
+  name: string;
+  role: string;
+  category: string;
+  followers: string;
+  rating: string;
+  avatarBg: string;
+  initials: string;
+  isLive: boolean;
+  tag: string;
+  image?: string;
+}
+
+const DEFAULT_CREATORS: CreatorItem[] = [
   {
     id: "creator-1",
     name: "Sophia Rivera",
@@ -21,6 +36,7 @@ const FEATURED_CREATORS = [
     initials: "SR",
     isLive: true,
     tag: "Trending #1",
+    image: "/images/journey/journey-angel.png",
   },
   {
     id: "creator-2",
@@ -33,6 +49,7 @@ const FEATURED_CREATORS = [
     initials: "AK",
     isLive: true,
     tag: "Voice Star",
+    image: "/images/journey/journey-alone.png",
   },
   {
     id: "creator-3",
@@ -45,6 +62,7 @@ const FEATURED_CREATORS = [
     initials: "ER",
     isLive: false,
     tag: "PK Duel Pro",
+    image: "/images/journey/journey-swetha.png",
   },
   {
     id: "creator-4",
@@ -57,6 +75,7 @@ const FEATURED_CREATORS = [
     initials: "PS",
     isLive: true,
     tag: "Top Mentor",
+    image: "/images/journey/journey-sanvi.png",
   },
   {
     id: "creator-5",
@@ -69,6 +88,7 @@ const FEATURED_CREATORS = [
     initials: "CD",
     isLive: true,
     tag: "Audio DJ",
+    image: "/images/team/jesus.png",
   },
   {
     id: "creator-6",
@@ -79,8 +99,9 @@ const FEATURED_CREATORS = [
     rating: "4.9",
     avatarBg: "from-fuchsia-500 via-pink-600 to-amber-500",
     initials: "MS",
-    isLive: false,
+    isLive: true,
     tag: "Rising Star",
+    image: "/images/journey/journey-maha.png",
   },
 ];
 
@@ -88,8 +109,18 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
   onOpenInquiry,
   onOpenGetStarted,
 }) => {
+  const [creators, setCreators] = useState<CreatorItem[]>(DEFAULT_CREATORS);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+
+  // Sync with Supabase CMS
+  useEffect(() => {
+    cmsService.getFeaturedHosts().then((liveHosts) => {
+      if (liveHosts && liveHosts.length > 0) {
+        setCreators(liveHosts as any);
+      }
+    });
+  }, []);
 
   // Smooth continuous auto-scroll
   useEffect(() => {
@@ -97,12 +128,12 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
     if (!container) return;
 
     let animationFrameId: number;
-    let scrollSpeed = 0.8; // px per tick
+    const scrollSpeed = 0.8; // px per tick
 
     const step = () => {
       if (!isPaused && container) {
         container.scrollLeft += scrollSpeed;
-        // Seamless loop when reaching half width (content is duplicated)
+        // Infinite seamless loop reset
         if (container.scrollLeft >= container.scrollWidth / 2) {
           container.scrollLeft = 0;
         }
@@ -111,29 +142,27 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
     };
 
     animationFrameId = requestAnimationFrame(step);
-
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused]);
 
   const scrollManual = (direction: "left" | "right") => {
     const container = scrollContainerRef.current;
-    if (container) {
-      const distance = 280;
-      container.scrollBy({
-        left: direction === "right" ? distance : -distance,
-        behavior: "smooth",
-      });
-    }
+    if (!container) return;
+    const scrollAmount = 300;
+    container.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <section className="py-8 sm:py-12 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+    <section className="py-10 sm:py-14 relative overflow-hidden select-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-pink/15 border border-brand-pink/30 text-brand-pink text-xs font-bold mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Meet Our Creators</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/40 text-purple-200 text-xs font-bold mb-2 backdrop-blur-md">
+              <Radio className="w-3.5 h-3.5 text-brand-pink animate-pulse" />
+              <span>Real-Time Broadcast Network</span>
             </div>
             <h3 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
               Featured Top Hosts & Broadcasters
@@ -143,13 +172,13 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
             </p>
           </div>
 
-          {/* Manual Scroll Buttons */}
+          {/* Carousel Arrows */}
           <div className="flex items-center gap-2 self-end sm:self-auto">
             <button
               type="button"
               onClick={() => scrollManual("left")}
               aria-label="Scroll left"
-              className="p-2 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 transition-colors"
+              className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 hover:border-purple-400/40 transition-colors shadow-md"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -157,7 +186,7 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
               type="button"
               onClick={() => scrollManual("right")}
               aria-label="Scroll right"
-              className="p-2 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 transition-colors"
+              className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 hover:border-purple-400/40 transition-colors shadow-md"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -172,38 +201,50 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => setIsPaused(false)}
-        className="flex gap-4 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 py-2 no-scrollbar"
+        className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 py-2.5 no-scrollbar"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {/* Double array for infinite continuous loop */}
-        {[...FEATURED_CREATORS, ...FEATURED_CREATORS].map((creator, index) => (
+        {[...creators, ...creators].map((creator, index) => (
           <div
             key={`${creator.id}-${index}`}
             onClick={() => {
               if (onOpenGetStarted) onOpenGetStarted();
               else if (onOpenInquiry) onOpenInquiry(`Connecting with host ${creator.name}`);
             }}
-            className="flex-shrink-0 w-64 sm:w-72 p-4 rounded-2xl bg-gradient-to-b from-white/[0.07] to-white/[0.02] border border-white/10 hover:border-brand-purple/60 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_-5px_rgba(133,0,255,0.4)] cursor-pointer group"
+            className="flex-shrink-0 w-64 sm:w-72 p-4 rounded-2xl bg-gradient-to-b from-[#180830]/90 to-[#0F0422]/90 border border-purple-500/20 hover:border-brand-purple/70 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_-5px_rgba(133,0,255,0.45)] cursor-pointer group"
           >
             <div className="flex items-start gap-3.5">
-              {/* Creator Avatar with Status Ring */}
+              {/* Creator Avatar with Photo & Status Ring */}
               <div className="relative flex-shrink-0">
                 <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${creator.avatarBg} p-0.5 shadow-md group-hover:scale-105 transition-transform`}
+                  className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr ${creator.avatarBg} p-0.5 shadow-md group-hover:scale-105 transition-transform overflow-hidden`}
                 >
-                  <div className="w-full h-full rounded-[14px] bg-[#140628] flex items-center justify-center text-white font-extrabold text-base">
-                    {creator.initials}
+                  <div className="relative w-full h-full rounded-[14px] bg-[#140628] overflow-hidden flex items-center justify-center">
+                    {creator.image ? (
+                      <Image
+                        src={creator.image}
+                        alt={creator.name}
+                        fill
+                        className="object-cover object-top"
+                        sizes="64px"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-white font-extrabold text-base">
+                        {creator.initials}
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* Live or Status Dot */}
                 {creator.isLive ? (
-                  <span className="absolute -bottom-1 -right-1 px-1.5 py-0.2 rounded-full bg-rose-600 text-[9px] font-black uppercase text-white tracking-wider flex items-center gap-0.5 shadow">
+                  <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-pink-600 text-[9px] font-black uppercase text-white tracking-wider flex items-center gap-1 shadow-lg ring-2 ring-[#0F0422]">
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                     LIVE
                   </span>
                 ) : (
-                  <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#140628]" />
+                  <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#140628] shadow" />
                 )}
               </div>
 
@@ -213,7 +254,7 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
                   <h4 className="text-sm font-bold text-white truncate group-hover:text-brand-gold transition-colors">
                     {creator.name}
                   </h4>
-                  <span className="text-[10px] font-extrabold text-brand-gold flex items-center gap-0.5">
+                  <span className="text-[10px] font-extrabold text-brand-gold flex items-center gap-0.5 shrink-0">
                     <Star className="w-3 h-3 fill-current text-brand-gold" />
                     {creator.rating}
                   </span>
@@ -237,4 +278,3 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
     </section>
   );
 };
-

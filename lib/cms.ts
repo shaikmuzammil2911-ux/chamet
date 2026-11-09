@@ -274,4 +274,133 @@ export const cmsService = {
       return null;
     }
   },
+
+  // 9. Chamet Showcase / Journey Banner Slides
+  async getShowcaseSlides() {
+    try {
+      const { data, error } = await supabase
+        .from("ecosystem_features")
+        .select("*")
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+
+      if (error || !data || data.length === 0) {
+        return [
+          {
+            id: 1,
+            title: "My Chamet Journey - Angel",
+            image: "/images/journey/journey-angel.png",
+            tag: "Angel's Story",
+            displayOrder: 1,
+          },
+          {
+            id: 2,
+            title: "My Chamet Journey - Alone",
+            image: "/images/journey/journey-alone.png",
+            tag: "Alone's Story",
+            displayOrder: 2,
+          },
+          {
+            id: 3,
+            title: "My Chamet Journey - Maha",
+            image: "/images/journey/journey-maha.png",
+            tag: "Maha's Story",
+            displayOrder: 3,
+          },
+          {
+            id: 4,
+            title: "My Chamet Journey - Sanvi",
+            image: "/images/journey/journey-sanvi.png",
+            tag: "Sanvi's Story",
+            displayOrder: 4,
+          },
+          {
+            id: 5,
+            title: "My Chamet Journey - Swetha",
+            image: "/images/journey/journey-swetha.png",
+            tag: "Swetha's Story",
+            displayOrder: 5,
+          },
+        ];
+      }
+
+      return data.map((item: any, idx: number) => ({
+        id: item.id || idx + 1,
+        title: item.title || `Chamet Journey Slide ${idx + 1}`,
+        image: item.image_url,
+        tag: item.badge || item.title || "Creator Story",
+        displayOrder: item.display_order ?? idx + 1,
+        isPublished: item.is_published ?? true,
+      }));
+    } catch {
+      return [
+        {
+          id: 1,
+          title: "My Chamet Journey - Angel",
+          image: "/images/journey/journey-angel.png",
+          tag: "Angel's Story",
+          displayOrder: 1,
+        },
+        {
+          id: 2,
+          title: "My Chamet Journey - Alone",
+          image: "/images/journey/journey-alone.png",
+          tag: "Alone's Story",
+          displayOrder: 2,
+        },
+        {
+          id: 3,
+          title: "My Chamet Journey - Maha",
+          image: "/images/journey/journey-maha.png",
+          tag: "Maha's Story",
+          displayOrder: 3,
+        },
+        {
+          id: 4,
+          title: "My Chamet Journey - Sanvi",
+          image: "/images/journey/journey-sanvi.png",
+          tag: "Sanvi's Story",
+          displayOrder: 4,
+        },
+        {
+          id: 5,
+          title: "My Chamet Journey - Swetha",
+          image: "/images/journey/journey-swetha.png",
+          tag: "Swetha's Story",
+          displayOrder: 5,
+        },
+      ];
+    }
+  },
+
+  // 10. Featured Hosts & Broadcasters
+  async getFeaturedHosts() {
+    try {
+      const { data, error } = await supabase
+        .from("featured_hosts")
+        .select("*")
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+
+      if (error || !data || data.length === 0) {
+        return null;
+      }
+
+      return data.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        role: item.role,
+        category: item.category,
+        followers: item.followers || "1M",
+        rating: item.rating ? String(item.rating) : "4.9",
+        avatarBg: item.avatar_bg || "from-pink-500 to-purple-600",
+        initials: item.initials || item.name.slice(0, 2).toUpperCase(),
+        isLive: item.is_live ?? true,
+        tag: item.tag || "Trending",
+        image: item.image_url,
+      }));
+    } catch {
+      return null;
+    }
+  },
 };

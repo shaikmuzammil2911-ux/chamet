@@ -31,12 +31,14 @@ import {
   X,
   Radio,
   CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 
 const SIDEBAR_ITEMS = [
   { title: "Dashboard Overview", href: "/admin/dashboard", icon: LayoutDashboard },
   { title: "Website Content Hub", href: "/admin/content", icon: Layers },
   { title: "Home Page CMS", href: "/admin/home", icon: Home },
+  { title: "Journey Slides CMS", href: "/admin/showcase", icon: Sparkles, badge: "New" },
   { title: "Services Management", href: "/admin/services", icon: Briefcase },
   { title: "About Us CMS", href: "/admin/about", icon: FileText },
   { title: "Vision & Core Values", href: "/admin/vision", icon: Compass },

@@ -76,82 +76,83 @@ VALUES
 ('Enterprise Payouts', 'Automated bi-weekly banking transfers with full transaction transparency.', 'CheckCircle2', 'Guaranteed Settlement', 4, TRUE);
 
 -- 5. ECOSYSTEM FEATURES (5-Slide Showcase)
+-- 5. ECOSYSTEM FEATURES (5-Slide My Chamet Journey Showcase)
 DELETE FROM public.ecosystem_features;
 INSERT INTO public.ecosystem_features (
     title, tagline, badge, description, image_url, accent_gradient, highlight_stat, cta_text, cta_url, display_order, is_published
 ) VALUES
 (
-    'Chamet Live Experience',
-    'High-Definition Broadcasts & Real-Time Celebrations',
-    'Ultra-Low Latency Media',
-    'Broadcast your talents to millions worldwide with crystal-clear audio, sub-second latency, and stunning 3D virtual gift animations that reward performers.',
-    '/images/showcase/showcase-1.png',
+    'My Chamet Journey - Angel',
+    'Real Creator Inspiration',
+    'Angel''s Story',
+    'Inspiring journey with Chamet - connect, play, and share happy moments with friends worldwide.',
+    '/images/journey/journey-angel.png',
     'from-purple-600 to-pink-500',
-    '100k+ Active Hosts Daily',
-    'Explore Live Rooms',
+    'Verified Host Story',
+    'Join Chamet Today',
     '/services/live-streaming',
     1, TRUE
 ),
 (
-    'Connect With The World',
-    'Authentic Friendships Across 150+ Countries',
-    'Global Matchmaking',
-    'Break cultural and linguistic barriers with instant multi-language translation and 1-on-1 verified video calls designed for meaningful human bonds.',
-    '/images/showcase/showcase-2.png',
-    'from-blue-600 to-cyan-500',
-    '150+ Nations Connected',
-    'Discover Connections',
-    '/services/social-connections',
+    'My Chamet Journey - Alone',
+    'Tailor Business to Creative Freedom',
+    'Alone''s Story',
+    'Balancing family and creative broadcasting with predictable earning opportunities on Chamet.',
+    '/images/journey/journey-alone.png',
+    'from-pink-500 to-rose-600',
+    'Middle Class Empowerment',
+    'Join Chamet Today',
+    '/services/live-streaming',
     2, TRUE
 ),
 (
-    'Live Hosts & Creators',
-    'Safe & Supportive Community for Independent Creators',
-    'Women Host Empowerment',
-    'Empowering women hosts and creators with safe, moderated broadcasting environments, dedicated mentor coaches, and dependable payout structures.',
-    '/images/showcase/showcase-3.png',
-    'from-pink-500 to-rose-600',
-    'Dedicated Host Care 24/7',
-    'Join as a Host',
-    '/careers',
+    'My Chamet Journey - Maha',
+    'Village Roots to Digital Success',
+    'Maha''s Story',
+    'Finding friends, funding education, and creating financial independence with Chamet.',
+    '/images/journey/journey-maha.png',
+    'from-blue-600 to-purple-600',
+    'College Student Success',
+    'Join Chamet Today',
+    '/services/live-streaming',
     3, TRUE
 ),
 (
-    'Entertainment & Games',
-    'Multi-Seat Audio Lounges & Casual Party Challenges',
-    'Interactive Voice Party',
-    'Step into 12-seat audio party rooms, play Ludo, Carrom, and trivia with companions, and compete in guild tournaments for exclusive platform rewards.',
-    '/images/showcase/showcase-4.png',
+    'My Chamet Journey - Sanvi',
+    'Happiness & Sustainable Support',
+    'Sanvi''s Story',
+    'Heartfelt stories of party room hosting, casual gaming, and genuine community bond.',
+    '/images/journey/journey-sanvi.png',
     'from-amber-500 to-purple-600',
-    '25+ Integrated Games',
-    'Enter Playrooms',
-    '/services/playrooms-games',
+    'Community Pillar',
+    'Join Chamet Today',
+    '/services/live-streaming',
     4, TRUE
 ),
 (
-    'Interactive E-Commerce',
-    'Live Stream Shopping & Creator Merchandise Marketplace',
-    'Next-Gen Commerce',
-    'Discover trending lifestyle items, purchase directly from verified live streamers, and enjoy exclusive interactive flash discounts in real-time.',
-    '/images/showcase/showcase-5.png',
+    'My Chamet Journey - Swetha',
+    'True Financial Empowerment',
+    'Swetha''s Story',
+    'Referring 10+ hosts and building a verified network of successful broadcasters.',
+    '/images/journey/journey-swetha.png',
     'from-emerald-500 to-teal-600',
-    'Instant Digital Checkout',
-    'Browse E-Commerce',
-    '/services/e-commerce',
+    '10+ Referrals',
+    'Join Chamet Today',
+    '/services/live-streaming',
     5, TRUE
 );
 
 -- 6. FEATURED HOSTS
 DELETE FROM public.featured_hosts;
 INSERT INTO public.featured_hosts (
-    name, role, category, followers, rating, avatar_bg, initials, is_live, tag, display_order, is_published
+    name, role, category, followers, rating, avatar_bg, initials, is_live, tag, image_url, display_order, is_published
 ) VALUES
-('Sophia Rivera', 'Top Live Broadcaster', 'Music & Vocals', '1.2M', 4.90, 'from-pink-500 via-rose-500 to-purple-600', 'SR', TRUE, 'Trending #1', 1, TRUE),
-('Aisha Kapoor', 'Party Lounge Host', 'Voice Playrooms', '950K', 4.90, 'from-purple-600 via-indigo-600 to-blue-500', 'AK', TRUE, 'Voice Star', 2, TRUE),
-('Elena Rostova', 'Interactive Host', 'Gaming & Battles', '780K', 4.80, 'from-amber-500 via-orange-500 to-rose-500', 'ER', FALSE, 'PK Duel Pro', 3, TRUE),
-('Priya Sharma', 'Master Creator Mentor', 'Host Empowerment', '1.1M', 5.00, 'from-emerald-500 via-teal-600 to-purple-600', 'PS', TRUE, 'Top Mentor', 4, TRUE),
-('Carlos Diaz', 'DJ & Audio Master', 'Late Night Beats', '640K', 4.80, 'from-blue-600 via-cyan-500 to-purple-600', 'CD', TRUE, 'Live DJ', 5, TRUE),
-('Maya Song', 'Rising Star Streamer', 'Dance & Lifestyle', '520K', 4.90, 'from-violet-600 via-pink-500 to-amber-500', 'MS', TRUE, 'Rising Star', 6, TRUE);
+('Sophia Rivera', 'Top Live Broadcaster', 'Music & Vocals', '1.2M', 4.90, 'from-pink-500 via-rose-500 to-purple-600', 'SR', TRUE, 'Trending #1', '/images/journey/journey-angel.png', 1, TRUE),
+('Aisha Kapoor', 'Party Lounge Host', 'Voice Playrooms', '950K', 4.90, 'from-purple-600 via-indigo-600 to-blue-500', 'AK', TRUE, 'Voice Star', '/images/journey/journey-alone.png', 2, TRUE),
+('Elena Rostova', 'Interactive Host', 'Gaming & Battles', '780K', 4.80, 'from-amber-500 via-orange-500 to-rose-500', 'ER', FALSE, 'PK Duel Pro', '/images/journey/journey-swetha.png', 3, TRUE),
+('Priya Sharma', 'Master Creator Mentor', 'Host Empowerment', '1.1M', 5.00, 'from-emerald-500 via-teal-600 to-purple-600', 'PS', TRUE, 'Top Mentor', '/images/journey/journey-sanvi.png', 4, TRUE),
+('Carlos Diaz', 'DJ & Audio Master', 'Late Night Beats', '640K', 4.80, 'from-blue-600 via-cyan-500 to-purple-600', 'CD', TRUE, 'Audio DJ', '/images/team/jesus.png', 5, TRUE),
+('Maya Song', 'Rising Star Streamer', 'Dance & Lifestyle', '520K', 4.90, 'from-violet-600 via-pink-500 to-amber-500', 'MS', TRUE, 'Rising Star', '/images/journey/journey-maha.png', 6, TRUE);
 
 -- 7. SERVICES
 DELETE FROM public.services;
