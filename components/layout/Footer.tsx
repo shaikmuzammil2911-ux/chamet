@@ -12,6 +12,7 @@ import {
   MapPin,
   ExternalLink,
   Sparkles,
+  ShieldCheck,
 } from "lucide-react";
 
 export const Footer: React.FC = () => {
@@ -273,6 +274,14 @@ export const Footer: React.FC = () => {
               className="px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/10 border border-white/10 text-purple-200 hover:text-white transition-all font-medium"
             >
               Terms & Conditions
+            </Link>
+            <span className="text-purple-500">•</span>
+            <Link
+              href="/admin/login"
+              className="px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-brand-purple/30 border border-white/10 text-brand-gold hover:text-white transition-all font-semibold flex items-center gap-1.5"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Admin Portal</span>
             </Link>
           </div>
         </div>

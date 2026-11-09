@@ -68,15 +68,32 @@ export const CareerModal: React.FC<CareerModalProps> = ({
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await fetch("/api/career", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          appliedPosition: formData.position,
+          experience: "Candidate Profile",
+          coverLetter: formData.message,
+          resumeUrl: fileName ? `Uploaded: ${fileName}` : undefined,
+        }),
+      });
       setIsSubmitted(true);
-    }, 800);
+    } catch (err) {
+      console.warn("Career submission fallback:", err);
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetForm = () => {

@@ -19,6 +19,9 @@ export interface ServiceItem {
     description: string;
   }[];
   ctaText: string;
+  heroImage?: string;
+  statNumber?: string;
+  statLabel?: string;
 }
 
 export const SERVICES: ServiceItem[] = [
