@@ -2,8 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Sparkles, Radio, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sparkles, Radio, Star, ChevronLeft, ChevronRight, Users, Award } from "lucide-react";
 import { cmsService } from "@/lib/cms";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ModalBackdrop } from "@/components/modals/ModalBackdrop";
+import { Button } from "@/components/ui/Button";
 
 interface CreatorStreamBannerProps {
   onOpenInquiry?: (subject?: string) => void;
@@ -110,6 +113,7 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
   onOpenGetStarted,
 }) => {
   const [creators, setCreators] = useState<CreatorItem[]>(DEFAULT_CREATORS);
+  const [selectedCreator, setSelectedCreator] = useState<CreatorItem | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -157,124 +161,217 @@ export const CreatorStreamBanner: React.FC<CreatorStreamBannerProps> = ({
 
   return (
     <section className="py-10 sm:py-14 relative overflow-hidden select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 sm:mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/40 text-purple-200 text-xs font-bold mb-2 backdrop-blur-md">
-              <Radio className="w-3.5 h-3.5 text-brand-pink animate-pulse" />
-              <span>Real-Time Broadcast Network</span>
+      <ScrollReveal direction="up">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 sm:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/40 text-purple-200 text-xs font-bold mb-2 backdrop-blur-md">
+                <Radio className="w-3.5 h-3.5 text-brand-pink animate-pulse" />
+                <span>Real-Time Broadcast Network</span>
+              </div>
+              <h3 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Featured Top Hosts & Broadcasters
+              </h3>
+              <p className="text-xs sm:text-sm text-purple-200/80 mt-1">
+                Discover the people bringing entertainment and connections to life across Chamet.
+              </p>
             </div>
-            <h3 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Featured Top Hosts & Broadcasters
-            </h3>
-            <p className="text-xs sm:text-sm text-purple-200/80 mt-1">
-              Discover the people bringing entertainment and connections to life across Chamet.
-            </p>
-          </div>
 
-          {/* Carousel Arrows */}
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <button
-              type="button"
-              onClick={() => scrollManual("left")}
-              aria-label="Scroll left"
-              className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 hover:border-purple-400/40 transition-colors shadow-md"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollManual("right")}
-              aria-label="Scroll right"
-              className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 hover:border-purple-400/40 transition-colors shadow-md"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+            {/* Carousel Arrows */}
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              <button
+                type="button"
+                onClick={() => scrollManual("left")}
+                aria-label="Scroll left"
+                className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 hover:border-purple-400/40 transition-colors shadow-md"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollManual("right")}
+                aria-label="Scroll right"
+                className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/10 hover:border-purple-400/40 transition-colors shadow-md"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Auto-sliding Horizontal Marquee Container */}
-      <div
-        ref={scrollContainerRef}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
-        className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 py-2.5 no-scrollbar"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {/* Double array for infinite continuous loop */}
-        {[...creators, ...creators].map((creator, index) => (
-          <div
-            key={`${creator.id}-${index}`}
-            onClick={() => {
-              if (onOpenGetStarted) onOpenGetStarted();
-              else if (onOpenInquiry) onOpenInquiry(`Connecting with host ${creator.name}`);
-            }}
-            className="flex-shrink-0 w-64 sm:w-72 p-4 rounded-2xl bg-gradient-to-b from-[#180830]/90 to-[#0F0422]/90 border border-purple-500/20 hover:border-brand-purple/70 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_-5px_rgba(133,0,255,0.45)] cursor-pointer group"
-          >
-            <div className="flex items-start gap-3.5">
-              {/* Creator Avatar with Photo & Status Ring */}
-              <div className="relative flex-shrink-0">
-                <div
-                  className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr ${creator.avatarBg} p-0.5 shadow-md group-hover:scale-105 transition-transform overflow-hidden`}
-                >
-                  <div className="relative w-full h-full rounded-[14px] bg-[#140628] overflow-hidden flex items-center justify-center">
-                    {creator.image ? (
-                      <Image
-                        src={creator.image}
-                        alt={creator.name}
-                        fill
-                        className="object-cover object-top"
-                        sizes="64px"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white font-extrabold text-base">
-                        {creator.initials}
-                      </div>
-                    )}
+      <ScrollReveal direction="up" delay={0.1}>
+        <div
+          ref={scrollContainerRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 py-2.5 no-scrollbar"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {/* Double array for infinite continuous loop */}
+          {[...creators, ...creators].map((creator, index) => (
+            <div
+              key={`${creator.id}-${index}`}
+              onClick={() => setSelectedCreator(creator)}
+              className="flex-shrink-0 w-64 sm:w-72 p-4 rounded-2xl bg-gradient-to-b from-[#180830]/90 to-[#0F0422]/90 border border-purple-500/20 hover:border-brand-purple/70 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_-5px_rgba(133,0,255,0.45)] cursor-pointer group"
+            >
+              <div className="flex items-start gap-3.5">
+                {/* Creator Avatar with Photo & Status Ring */}
+                <div className="relative flex-shrink-0">
+                  <div
+                    className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr ${creator.avatarBg} p-0.5 shadow-md group-hover:scale-105 transition-transform overflow-hidden`}
+                  >
+                    <div className="relative w-full h-full rounded-[14px] bg-[#140628] overflow-hidden flex items-center justify-center">
+                      {creator.image ? (
+                        <Image
+                          src={creator.image}
+                          alt={creator.name}
+                          fill
+                          className="object-cover object-top"
+                          sizes="64px"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white font-extrabold text-base">
+                          {creator.initials}
+                        </div>
+                      )}
+                    </div>
                   </div>
+
+                  {/* Live or Status Dot */}
+                  {creator.isLive ? (
+                    <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-pink-600 text-[9px] font-black uppercase text-white tracking-wider flex items-center gap-1 shadow-lg ring-2 ring-[#0F0422]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                      LIVE
+                    </span>
+                  ) : (
+                    <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#140628] shadow" />
+                  )}
                 </div>
 
-                {/* Live or Status Dot */}
-                {creator.isLive ? (
-                  <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-pink-600 text-[9px] font-black uppercase text-white tracking-wider flex items-center gap-1 shadow-lg ring-2 ring-[#0F0422]">
+                {/* Creator Details */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-1">
+                    <h4 className="text-sm font-bold text-white truncate group-hover:text-brand-gold transition-colors">
+                      {creator.name}
+                    </h4>
+                    <span className="text-[10px] font-extrabold text-brand-gold flex items-center gap-0.5 shrink-0">
+                      <Star className="w-3 h-3 fill-current text-brand-gold" />
+                      {creator.rating}
+                    </span>
+                  </div>
+
+                  <div className="text-xs font-semibold text-brand-pink truncate mt-0.5">
+                    {creator.role}
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] text-purple-200/70 mt-2 pt-2 border-t border-white/5">
+                    <span className="truncate">{creator.category}</span>
+                    <span className="font-bold text-white shrink-0">
+                      {creator.followers} Fans
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </ScrollReveal>
+
+      {/* Interactive Creator Quick-Profile Popup Modal */}
+      <ModalBackdrop
+        isOpen={!!selectedCreator}
+        onClose={() => setSelectedCreator(null)}
+        title={selectedCreator?.name || "Featured Creator"}
+        badge={selectedCreator?.tag || "Verified Broadcaster"}
+        maxWidth="md"
+      >
+        {selectedCreator && (
+          <div className="space-y-5">
+            <div className="flex flex-col sm:flex-row items-center gap-5">
+              <div
+                className={`relative w-28 h-28 rounded-3xl bg-gradient-to-tr ${selectedCreator.avatarBg} p-1 shadow-xl shrink-0`}
+              >
+                <div className="relative w-full h-full rounded-[20px] overflow-hidden bg-[#140628]">
+                  {selectedCreator.image ? (
+                    <Image
+                      src={selectedCreator.image}
+                      alt={selectedCreator.name}
+                      fill
+                      className="object-cover object-top"
+                      sizes="112px"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white font-black text-2xl">
+                      {selectedCreator.initials}
+                    </div>
+                  )}
+                </div>
+                {selectedCreator.isLive && (
+                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-rose-600 text-[10px] font-black uppercase text-white tracking-wider shadow-lg flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-                    LIVE
+                    LIVE NOW
                   </span>
-                ) : (
-                  <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#140628] shadow" />
                 )}
               </div>
 
-              {/* Creator Details */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <h4 className="text-sm font-bold text-white truncate group-hover:text-brand-gold transition-colors">
-                    {creator.name}
-                  </h4>
-                  <span className="text-[10px] font-extrabold text-brand-gold flex items-center gap-0.5 shrink-0">
-                    <Star className="w-3 h-3 fill-current text-brand-gold" />
-                    {creator.rating}
+              <div className="text-center sm:text-left space-y-1.5">
+                <div className="text-sm font-bold text-brand-pink">
+                  {selectedCreator.role}
+                </div>
+                <div className="text-xs text-purple-200">
+                  Specialty: <span className="text-white font-semibold">{selectedCreator.category}</span>
+                </div>
+                <div className="flex items-center justify-center sm:justify-start gap-4 pt-1 text-xs">
+                  <span className="inline-flex items-center gap-1 text-brand-gold font-bold">
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    {selectedCreator.rating} Rating
                   </span>
-                </div>
-
-                <div className="text-xs font-semibold text-brand-pink truncate mt-0.5">
-                  {creator.role}
-                </div>
-
-                <div className="flex items-center justify-between text-[11px] text-purple-200/70 mt-2 pt-2 border-t border-white/5">
-                  <span className="truncate">{creator.category}</span>
-                  <span className="font-bold text-white shrink-0">
-                    {creator.followers} Fans
+                  <span className="inline-flex items-center gap-1 text-white font-bold">
+                    <Users className="w-3.5 h-3.5 text-brand-pink" />
+                    {selectedCreator.followers} Fans
                   </span>
                 </div>
               </div>
             </div>
+
+            <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 text-xs text-purple-200 leading-relaxed flex items-start gap-3">
+              <Award className="w-5 h-5 text-brand-gold shrink-0 mt-0.5" />
+              <p>
+                Join {selectedCreator.name} and thousands of verified creators on Chamet. Enjoy safe moderation, transparent weekly payouts, and dedicated mentorship from ManaVerse Technologies.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-1">
+              <Button
+                variant="gold"
+                className="flex-1"
+                withArrow
+                onClick={() => {
+                  setSelectedCreator(null);
+                  if (onOpenGetStarted) onOpenGetStarted();
+                }}
+              >
+                Become a Host Today
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  const name = selectedCreator.name;
+                  setSelectedCreator(null);
+                  if (onOpenInquiry) onOpenInquiry(`Connect with host ${name}`);
+                }}
+              >
+                Send Inquiry
+              </Button>
+            </div>
           </div>
-        ))}
-      </div>
+        )}
+      </ModalBackdrop>
     </section>
   );
 };

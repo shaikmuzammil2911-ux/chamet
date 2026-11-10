@@ -1,7 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ModalBackdrop } from "@/components/modals/ModalBackdrop";
+import { Button } from "@/components/ui/Button";
+import { useModals } from "@/components/providers/ModalContext";
 import {
   ShieldAlert,
   TrendingUp,
@@ -52,6 +56,9 @@ const FEATURES = [
 ];
 
 export const WhyChooseUs: React.FC = () => {
+  const [selectedFeature, setSelectedFeature] = useState<(typeof FEATURES)[number] | null>(null);
+  const { openGetStarted } = useModals();
+
   return (
     <section className="py-16 sm:py-24 relative overflow-hidden bg-gradient-to-b from-transparent via-[#14052E]/50 to-transparent">
       {/* Background glow */}
@@ -59,64 +66,107 @@ export const WhyChooseUs: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-bold mb-3 backdrop-blur-md">
-            <CheckCircle className="w-3.5 h-3.5" />
-            <span>Why Choose ManaVerse</span>
+        <ScrollReveal direction="up">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-bold mb-3 backdrop-blur-md">
+              <CheckCircle className="w-3.5 h-3.5" />
+              <span>Why Choose ManaVerse</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+              More Than Just Entertainment
+            </h2>
+
+            <p className="text-purple-200/90 text-sm sm:text-base lg:text-lg mt-3 leading-relaxed">
+              Our platform makes entertainment simple and enjoyable for everyone. Hosts can explore opportunities to earn and support their families financially.
+            </p>
           </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            More Than Just Entertainment
-          </h2>
-
-          <p className="text-purple-200/90 text-sm sm:text-base lg:text-lg mt-3 leading-relaxed">
-            Our platform makes entertainment simple and enjoyable for everyone. Hosts can explore opportunities to earn and support their families financially.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Feature Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((item, index) => {
             const Icon = item.icon;
             return (
-              <GlassCard
-                key={index}
-                glowColor={
-                  index % 3 === 0
-                    ? "purple"
-                    : index % 3 === 1
-                    ? "pink"
-                    : "gold"
-                }
-                className="p-6 sm:p-7 flex flex-col justify-between group transition-transform duration-300 hover:-translate-y-1.5"
-              >
-                <div>
-                  <div
-                    className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${item.color} p-0.5 shadow-lg mb-5 group-hover:scale-110 transition-transform`}
-                  >
-                    <div className="w-full h-full rounded-[14px] bg-[#140628] flex items-center justify-center text-white">
-                      <Icon className="w-6 h-6 text-white" />
+              <ScrollReveal key={index} direction="up" delay={index * 0.08}>
+                <GlassCard
+                  glowColor={
+                    index % 3 === 0
+                      ? "purple"
+                      : index % 3 === 1
+                      ? "pink"
+                      : "gold"
+                  }
+                  onClick={() => setSelectedFeature(item)}
+                  className="p-6 sm:p-7 h-full flex flex-col justify-between group transition-transform duration-300 hover:-translate-y-1.5 cursor-pointer"
+                >
+                  <div>
+                    <div
+                      className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${item.color} p-0.5 shadow-lg mb-5 group-hover:scale-110 transition-transform`}
+                    >
+                      <div className="w-full h-full rounded-[14px] bg-[#140628] flex items-center justify-center text-white">
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
                     </div>
+
+                    <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight mb-2 group-hover:text-brand-gold transition-colors">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight mb-2 group-hover:text-brand-gold transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-white/5 flex items-center gap-1.5 text-[11px] font-semibold text-purple-300/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-purple" />
-                  <span>ManaVerse Standard</span>
-                </div>
-              </GlassCard>
+                  <div className="mt-5 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] font-semibold text-purple-300/60 group-hover:text-brand-gold transition-colors">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-purple" />
+                      <span>ManaVerse Standard</span>
+                    </div>
+                    <span>Learn More →</span>
+                  </div>
+                </GlassCard>
+              </ScrollReveal>
             );
           })}
         </div>
       </div>
+
+      {/* Interactive Feature Detail Popup */}
+      <ModalBackdrop
+        isOpen={!!selectedFeature}
+        onClose={() => setSelectedFeature(null)}
+        title={selectedFeature?.title}
+        badge="Why Choose ManaVerse"
+        maxWidth="md"
+      >
+        {selectedFeature && (
+          <div className="space-y-4">
+            <p className="text-sm text-purple-100 leading-relaxed">
+              {selectedFeature.desc}
+            </p>
+            <div className="p-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs text-purple-200">
+              Backed by ManaVerse Technologies Pvt. Ltd.’s 11+ years of global platform leadership.
+            </div>
+            <div className="flex justify-end gap-3 pt-2">
+              <Button variant="outline" size="sm" onClick={() => setSelectedFeature(null)}>
+                Close
+              </Button>
+              <Button
+                variant="gold"
+                size="sm"
+                withArrow
+                onClick={() => {
+                  setSelectedFeature(null);
+                  openGetStarted();
+                }}
+              >
+                Join Platform
+              </Button>
+            </div>
+          </div>
+        )}
+      </ModalBackdrop>
     </section>
   );
 };

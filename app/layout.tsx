@@ -4,6 +4,7 @@ import { ModalProvider } from "@/components/providers/ModalContext";
 import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/navigation/ScrollToTop";
+import { SiteScrollEffects } from "@/components/ui/ScrollReveal";
 
 export const viewport: Viewport = {
   themeColor: "#0F0624",
@@ -72,6 +73,7 @@ export default function RootLayout({
       <body className="bg-[#0F0624] text-white selection:bg-[#FF29D6] selection:text-white antialiased flex flex-col min-h-screen font-sans">
         <ModalProvider>
           <ScrollToTop />
+          <SiteScrollEffects />
           <HeaderWrapper />
           <main className="flex-1 w-full">{children}</main>
           <Footer />

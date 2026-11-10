@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { COMPANY } from "@/data/company";
 import { TypewriterNumber } from "@/components/ui/TypewriterNumber";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import {
   Sparkles,
   Eye,
@@ -26,7 +27,7 @@ export const AboutSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Story & Mission Narrative */}
-          <div className="lg:col-span-7 space-y-6">
+          <ScrollReveal direction="right" className="lg:col-span-7 space-y-6">
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-purple/20 border border-brand-purple/50 text-purple-200 text-xs sm:text-sm font-bold backdrop-blur-md">
               <Sparkles className="w-4 h-4 text-brand-gold" />
@@ -95,10 +96,10 @@ export const AboutSection: React.FC = () => {
                 Learn More About Our Journey
               </Button>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right Column: Vision & Mission Interactive Cards */}
-          <div className="lg:col-span-5 space-y-4">
+          <ScrollReveal direction="left" delay={0.12} className="lg:col-span-5 space-y-4">
             {/* Vision Card */}
             <GlassCard
               glowColor="purple"
@@ -161,7 +162,7 @@ export const AboutSection: React.FC = () => {
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

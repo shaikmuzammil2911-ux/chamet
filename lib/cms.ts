@@ -277,6 +277,51 @@ export const cmsService = {
 
   // 9. Chamet Showcase / Journey Banner Slides
   async getShowcaseSlides() {
+    const fallbackSlides = [
+      {
+        id: 1,
+        title: "My Chamet Journey - Sarika",
+        image: "/images/journey/journey-sarika.png",
+        tag: "Sarika's Story",
+        displayOrder: 1,
+      },
+      {
+        id: 2,
+        title: "My Chamet Journey - Angel",
+        image: "/images/journey/journey-angel.png",
+        tag: "Angel's Story",
+        displayOrder: 2,
+      },
+      {
+        id: 3,
+        title: "My Chamet Journey - Alone",
+        image: "/images/journey/journey-alone.png",
+        tag: "Alone's Story",
+        displayOrder: 3,
+      },
+      {
+        id: 4,
+        title: "My Chamet Journey - Maha",
+        image: "/images/journey/journey-maha.png",
+        tag: "Maha's Story",
+        displayOrder: 4,
+      },
+      {
+        id: 5,
+        title: "My Chamet Journey - Sanvi",
+        image: "/images/journey/journey-sanvi.png",
+        tag: "Sanvi's Story",
+        displayOrder: 5,
+      },
+      {
+        id: 6,
+        title: "My Chamet Journey - Swetha",
+        image: "/images/journey/journey-swetha.png",
+        tag: "Swetha's Story",
+        displayOrder: 6,
+      },
+    ];
+
     try {
       const { data, error } = await supabase
         .from("ecosystem_features")
@@ -285,43 +330,7 @@ export const cmsService = {
         .order("display_order", { ascending: true });
 
       if (error || !data || data.length === 0) {
-        return [
-          {
-            id: 1,
-            title: "My Chamet Journey - Angel",
-            image: "/images/journey/journey-angel.png",
-            tag: "Angel's Story",
-            displayOrder: 1,
-          },
-          {
-            id: 2,
-            title: "My Chamet Journey - Alone",
-            image: "/images/journey/journey-alone.png",
-            tag: "Alone's Story",
-            displayOrder: 2,
-          },
-          {
-            id: 3,
-            title: "My Chamet Journey - Maha",
-            image: "/images/journey/journey-maha.png",
-            tag: "Maha's Story",
-            displayOrder: 3,
-          },
-          {
-            id: 4,
-            title: "My Chamet Journey - Sanvi",
-            image: "/images/journey/journey-sanvi.png",
-            tag: "Sanvi's Story",
-            displayOrder: 4,
-          },
-          {
-            id: 5,
-            title: "My Chamet Journey - Swetha",
-            image: "/images/journey/journey-swetha.png",
-            tag: "Swetha's Story",
-            displayOrder: 5,
-          },
-        ];
+        return fallbackSlides;
       }
 
       return data.map((item: any, idx: number) => ({
@@ -333,43 +342,7 @@ export const cmsService = {
         isPublished: item.is_published ?? true,
       }));
     } catch {
-      return [
-        {
-          id: 1,
-          title: "My Chamet Journey - Angel",
-          image: "/images/journey/journey-angel.png",
-          tag: "Angel's Story",
-          displayOrder: 1,
-        },
-        {
-          id: 2,
-          title: "My Chamet Journey - Alone",
-          image: "/images/journey/journey-alone.png",
-          tag: "Alone's Story",
-          displayOrder: 2,
-        },
-        {
-          id: 3,
-          title: "My Chamet Journey - Maha",
-          image: "/images/journey/journey-maha.png",
-          tag: "Maha's Story",
-          displayOrder: 3,
-        },
-        {
-          id: 4,
-          title: "My Chamet Journey - Sanvi",
-          image: "/images/journey/journey-sanvi.png",
-          tag: "Sanvi's Story",
-          displayOrder: 4,
-        },
-        {
-          id: 5,
-          title: "My Chamet Journey - Swetha",
-          image: "/images/journey/journey-swetha.png",
-          tag: "Swetha's Story",
-          displayOrder: 5,
-        },
-      ];
+      return fallbackSlides;
     }
   },
 

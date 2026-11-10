@@ -6,6 +6,7 @@ import { SERVICES, ServiceItem } from "@/data/services";
 import { cmsService } from "@/lib/cms";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ServiceModal } from "@/components/modals/ServiceModal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import {
   ShoppingBag,
   Radio,
@@ -100,36 +101,38 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Chamet signature style */}
         {showSectionHeader && (
-          <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
-            <div className="flex items-center gap-4 w-full max-w-md justify-center mb-3">
-              <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
-              <div className="px-5 py-1.5 rounded-full bg-gradient-to-r from-brand-deep via-brand-purple to-brand-deep border border-brand-purple/60 text-white font-extrabold text-sm sm:text-base tracking-wide shadow-lg shadow-purple-900/50">
-                Our Services
+          <ScrollReveal direction="up">
+            <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
+              <div className="flex items-center gap-4 w-full max-w-md justify-center mb-3">
+                <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
+                <div className="px-5 py-1.5 rounded-full bg-gradient-to-r from-brand-deep via-brand-purple to-brand-deep border border-brand-purple/60 text-white font-extrabold text-sm sm:text-base tracking-wide shadow-lg shadow-purple-900/50">
+                  Our Services
+                </div>
+                <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
               </div>
-              <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
-            </div>
 
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Innovative Platforms For Entertainment & Earning
-            </h2>
-            <p className="text-purple-200/80 text-sm sm:text-base max-w-2xl mt-2.5">
-              Empowering global audiences and creator hosts with next-generation interactive digital entertainment.
-            </p>
-          </div>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                Innovative Platforms For Entertainment & Earning
+              </h2>
+              <p className="text-purple-200/80 text-sm sm:text-base max-w-2xl mt-2.5">
+                Empowering global audiences and creator hosts with next-generation interactive digital entertainment.
+              </p>
+            </div>
+          </ScrollReveal>
         )}
 
         {/* Services Cards Grid with Live Sync */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service) => {
+          {services.map((service, index) => {
             const Icon = getServiceIcon(service.id);
             const style = getCardStyle(service.id);
 
             return (
-              <GlassCard
-                key={service.id}
-                glowColor={style.glow}
-                className="flex flex-col justify-between p-6 sm:p-7 group relative overflow-hidden transition-all duration-300 hover:-translate-y-2"
-              >
+              <ScrollReveal key={service.id} direction="up" delay={index * 0.08}>
+                <GlassCard
+                  glowColor={style.glow}
+                  className="h-full flex flex-col justify-between p-6 sm:p-7 group relative overflow-hidden transition-all duration-300 hover:-translate-y-2"
+                >
                 {/* Background Gradient */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-b ${style.gradient} opacity-70 group-hover:opacity-90 transition-opacity`}
@@ -180,6 +183,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   </Link>
                 </div>
               </GlassCard>
+              </ScrollReveal>
             );
           })}
         </div>

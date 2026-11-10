@@ -14,6 +14,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 interface AgencyStoriesSectionProps {
   onOpenStory: (storyId: string) => void;
@@ -35,7 +36,7 @@ export const AgencyStoriesSection: React.FC<AgencyStoriesSectionProps> = ({
       <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-brand-pink/15 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 right-10 w-96 h-96 bg-brand-purple/20 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollReveal direction="up" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-pink-950/60 to-purple-950/60 border border-pink-500/30 text-pink-300 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
@@ -162,7 +163,7 @@ export const AgencyStoriesSection: React.FC<AgencyStoriesSectionProps> = ({
             </motion.div>
           ))}
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 };

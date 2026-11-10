@@ -22,6 +22,7 @@ import {
   Award,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 interface TeamSectionProps {
   isFullPage?: boolean;
@@ -70,55 +71,57 @@ export const TeamSection: React.FC<TeamSectionProps> = ({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-purple/25 border border-brand-purple/40 text-purple-200 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
-            <Users className="w-3.5 h-3.5 text-brand-gold" />
-            <span>Executive & Regional Leadership</span>
+        <ScrollReveal direction="up">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-purple/25 border border-brand-purple/40 text-purple-200 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+              <Users className="w-3.5 h-3.5 text-brand-gold" />
+              <span>Executive & Regional Leadership</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+              Meet the Leaders Driving{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-amber-300 to-pink-400">
+                Chamet & ManaVerse
+              </span>
+            </h2>
+
+            <p className="text-purple-200/90 text-sm sm:text-base lg:text-lg leading-relaxed">
+              The visionary executives, co-founders, and sales leadership steering global creator ecosystems across India, the UK, the Americas, and the Middle East.
+            </p>
+
+            {/* Department / Market Filter Pills */}
+            <div className="pt-2 flex items-center justify-center flex-wrap gap-2">
+              {TEAM_DEPARTMENTS.map((dept) => {
+                const isActive = selectedDept === dept;
+                return (
+                  <button
+                    key={dept}
+                    type="button"
+                    onClick={() => setSelectedDept(dept)}
+                    className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                      isActive
+                        ? "bg-gradient-to-r from-brand-purple to-brand-pink text-white shadow-lg shadow-purple-900/50 scale-105"
+                        : "bg-white/5 text-purple-200 hover:text-white hover:bg-white/10 border border-purple-500/20"
+                    }`}
+                  >
+                    {dept}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Meet the Leaders Driving{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-amber-300 to-pink-400">
-              Chamet & ManaVerse
-            </span>
-          </h2>
-
-          <p className="text-purple-200/90 text-sm sm:text-base lg:text-lg leading-relaxed">
-            The visionary executives, co-founders, and sales leadership steering global creator ecosystems across India, the UK, the Americas, and the Middle East.
-          </p>
-
-          {/* Department / Market Filter Pills */}
-          <div className="pt-2 flex items-center justify-center flex-wrap gap-2">
-            {TEAM_DEPARTMENTS.map((dept) => {
-              const isActive = selectedDept === dept;
-              return (
-                <button
-                  key={dept}
-                  type="button"
-                  onClick={() => setSelectedDept(dept)}
-                  className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${
-                    isActive
-                      ? "bg-gradient-to-r from-brand-purple to-brand-pink text-white shadow-lg shadow-purple-900/50 scale-105"
-                      : "bg-white/5 text-purple-200 hover:text-white hover:bg-white/10 border border-purple-500/20"
-                  }`}
-                >
-                  {dept}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        </ScrollReveal>
 
         {/* Team Grid: Grand 3D Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {displayedMembers.map((member) => (
-            <motion.div
-              key={member.id}
-              whileHover={{ y: -8 }}
-              transition={{ duration: 0.25 }}
-              onClick={() => setSelectedMember(member)}
-              className="flex flex-col h-full rounded-3xl bg-gradient-to-b from-[#180A36]/90 via-[#13072E]/95 to-[#0F0424]/95 border border-purple-500/25 shadow-xl shadow-purple-950/40 hover:border-brand-pink/50 transition-all overflow-hidden cursor-pointer group"
-            >
+          {displayedMembers.map((member, index) => (
+            <ScrollReveal key={member.id} direction="up" delay={Math.min(index * 0.08, 0.35)}>
+              <motion.div
+                whileHover={{ y: -8 }}
+                transition={{ duration: 0.25 }}
+                onClick={() => setSelectedMember(member)}
+                className="flex flex-col h-full rounded-3xl bg-gradient-to-b from-[#180A36]/90 via-[#13072E]/95 to-[#0F0424]/95 border border-purple-500/25 shadow-xl shadow-purple-950/40 hover:border-brand-pink/50 transition-all overflow-hidden cursor-pointer group"
+              >
               {/* Grand Portrait Photo Container */}
               <div className="relative h-72 sm:h-80 w-full overflow-hidden bg-purple-950">
                 <Image
@@ -231,6 +234,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({
                 </div>
               </div>
             </motion.div>
+            </ScrollReveal>
           ))}
         </div>
 

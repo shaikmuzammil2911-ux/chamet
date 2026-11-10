@@ -32,42 +32,50 @@ interface JourneySlide {
 const DEFAULT_SLIDES: JourneySlide[] = [
   {
     id: "journey-1",
-    title: "My Chamet Journey - Angel",
-    badge: "Angel's Story",
-    image_url: "/images/journey/journey-angel.png",
+    title: "My Chamet Journey - Sarika",
+    badge: "Sarika's Story",
+    image_url: "/images/journey/journey-sarika.png",
     display_order: 1,
     is_published: true,
   },
   {
     id: "journey-2",
-    title: "My Chamet Journey - Alone",
-    badge: "Alone's Story",
-    image_url: "/images/journey/journey-alone.png",
+    title: "My Chamet Journey - Angel",
+    badge: "Angel's Story",
+    image_url: "/images/journey/journey-angel.png",
     display_order: 2,
     is_published: true,
   },
   {
     id: "journey-3",
-    title: "My Chamet Journey - Maha",
-    badge: "Maha's Story",
-    image_url: "/images/journey/journey-maha.png",
+    title: "My Chamet Journey - Alone",
+    badge: "Alone's Story",
+    image_url: "/images/journey/journey-alone.png",
     display_order: 3,
     is_published: true,
   },
   {
     id: "journey-4",
-    title: "My Chamet Journey - Sanvi",
-    badge: "Sanvi's Story",
-    image_url: "/images/journey/journey-sanvi.png",
+    title: "My Chamet Journey - Maha",
+    badge: "Maha's Story",
+    image_url: "/images/journey/journey-maha.png",
     display_order: 4,
     is_published: true,
   },
   {
     id: "journey-5",
+    title: "My Chamet Journey - Sanvi",
+    badge: "Sanvi's Story",
+    image_url: "/images/journey/journey-sanvi.png",
+    display_order: 5,
+    is_published: true,
+  },
+  {
+    id: "journey-6",
     title: "My Chamet Journey - Swetha",
     badge: "Swetha's Story",
     image_url: "/images/journey/journey-swetha.png",
-    display_order: 5,
+    display_order: 6,
     is_published: true,
   },
 ];
@@ -542,3 +550,4 @@ export default function AdminShowcasePage() {
     </div>
   );
 }
+

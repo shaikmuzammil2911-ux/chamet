@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/Button";
 import { COMPANY } from "@/data/company";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import {
   Sparkles,
   Phone,
@@ -29,7 +30,7 @@ export const JoinCreatorCTA: React.FC<JoinCreatorCTAProps> = ({
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-pink/20 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-brand-purple/25 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollReveal direction="scale" className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-8 sm:p-14 rounded-3xl bg-gradient-to-br from-purple-950/80 via-[#180936]/90 to-pink-950/80 border border-purple-500/30 backdrop-blur-xl shadow-2xl shadow-purple-950/60 text-center relative overflow-hidden">
           {/* Subtle Top Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/15 border border-brand-gold/40 text-brand-gold text-xs font-black uppercase tracking-wider mb-6">
@@ -118,7 +119,7 @@ export const JoinCreatorCTA: React.FC<JoinCreatorCTAProps> = ({
             </a>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 };

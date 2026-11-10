@@ -75,12 +75,23 @@ VALUES
 ('Global Entertainment', 'Over 150 countries enjoying low-latency video and audio celebrations.', 'Sparkles', 'Global Reach', 3, TRUE),
 ('Enterprise Payouts', 'Automated bi-weekly banking transfers with full transaction transparency.', 'CheckCircle2', 'Guaranteed Settlement', 4, TRUE);
 
--- 5. ECOSYSTEM FEATURES (5-Slide Showcase)
--- 5. ECOSYSTEM FEATURES (5-Slide My Chamet Journey Showcase)
+-- 5. ECOSYSTEM FEATURES (6-Slide My Chamet Journey Showcase)
 DELETE FROM public.ecosystem_features;
 INSERT INTO public.ecosystem_features (
     title, tagline, badge, description, image_url, accent_gradient, highlight_stat, cta_text, cta_url, display_order, is_published
 ) VALUES
+(
+    'My Chamet Journey - Sarika',
+    'Happiness & Support With Chamet',
+    'Sarika''s Story',
+    'Overcoming challenges from a middle-class family and discovering genuine happiness and support on Chamet.',
+    '/images/journey/journey-sarika.png',
+    'from-purple-600 to-amber-500',
+    'Featured Story #1',
+    'Join Chamet Today',
+    '/services/live-streaming',
+    1, TRUE
+),
 (
     'My Chamet Journey - Angel',
     'Real Creator Inspiration',
@@ -91,7 +102,7 @@ INSERT INTO public.ecosystem_features (
     'Verified Host Story',
     'Join Chamet Today',
     '/services/live-streaming',
-    1, TRUE
+    2, TRUE
 ),
 (
     'My Chamet Journey - Alone',
@@ -103,7 +114,7 @@ INSERT INTO public.ecosystem_features (
     'Middle Class Empowerment',
     'Join Chamet Today',
     '/services/live-streaming',
-    2, TRUE
+    3, TRUE
 ),
 (
     'My Chamet Journey - Maha',
@@ -115,7 +126,7 @@ INSERT INTO public.ecosystem_features (
     'College Student Success',
     'Join Chamet Today',
     '/services/live-streaming',
-    3, TRUE
+    4, TRUE
 ),
 (
     'My Chamet Journey - Sanvi',
@@ -127,7 +138,7 @@ INSERT INTO public.ecosystem_features (
     'Community Pillar',
     'Join Chamet Today',
     '/services/live-streaming',
-    4, TRUE
+    5, TRUE
 ),
 (
     'My Chamet Journey - Swetha',
@@ -139,7 +150,7 @@ INSERT INTO public.ecosystem_features (
     '10+ Referrals',
     'Join Chamet Today',
     '/services/live-streaming',
-    5, TRUE
+    6, TRUE
 );
 
 -- 6. FEATURED HOSTS

@@ -140,20 +140,20 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
       aria-roledescription="carousel"
       aria-label="ManaVerse Hero Showcase"
     >
-      {/* Background Images with Fast Crossfade & Ken-Burns Zoom Effect */}
+      {/* Background Images with Fast Crossfade & Clean Top Clearance below Navbar */}
       {slides.map((slide, index) => {
         const isActive = index === currentIndex;
         return (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            className={`absolute inset-x-0 bottom-0 top-16 sm:top-[72px] lg:top-[76px] transition-opacity duration-700 ease-in-out ${
               isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            {/* Background Image */}
+            {/* Background Image positioned cleanly with top-right subject framing */}
             <div
-              className={`relative w-full h-full transform transition-transform duration-[4000ms] ease-out ${
-                isActive ? "scale-105" : "scale-100"
+              className={`relative w-full h-full origin-[85%_top] transform transition-transform duration-[4000ms] ease-out ${
+                isActive ? "scale-[1.02]" : "scale-100"
               }`}
             >
               <Image
@@ -161,17 +161,17 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
                 alt={slide.alt}
                 fill
                 priority={index === 0}
-                className="object-cover object-[75%_center] sm:object-[70%_center] lg:object-right-center"
+                className="object-cover object-[72%_top] sm:object-[78%_top] lg:object-[right_top]"
                 sizes="100vw"
-                quality={90}
+                quality={92}
               />
             </div>
 
-            {/* Gradient Overlays for contrast and readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0F0624] via-[#0F0624]/85 to-transparent lg:w-3/5 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0624] via-[#0F0624]/60 to-transparent lg:hidden pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0F0624] to-transparent pointer-events-none" />
-            <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0F0624]/90 to-transparent pointer-events-none" />
+            {/* Gradient Overlays for contrast and readability while keeping right-side talent crisp */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0F0624] via-[#0F0624]/80 to-transparent lg:w-[58%] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0624] via-[#0F0624]/55 to-transparent lg:hidden pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0F0624] to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#0F0624] to-transparent pointer-events-none" />
           </div>
         );
       })}

@@ -5,6 +5,7 @@ import { COMPANY } from "@/data/company";
 import { cmsService } from "@/lib/cms";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import {
   MapPin,
   Building2,
@@ -42,7 +43,7 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left: Office Locations Card (Head Office UK & Branch Office Bengaluru) */}
-          <div className="lg:col-span-6">
+          <ScrollReveal direction="right" className="lg:col-span-6">
             <GlassCard
               glowColor="blue"
               className="p-6 sm:p-8 h-full flex flex-col justify-between"
@@ -105,10 +106,10 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
                 <span className="text-brand-gold font-semibold">Operating Worldwide</span>
               </div>
             </GlassCard>
-          </div>
+          </ScrollReveal>
 
           {/* Right Top: Direct Contact Card (Phone & WhatsApp) */}
-          <div className="lg:col-span-6 flex flex-col gap-6">
+          <ScrollReveal direction="left" delay={0.1} className="lg:col-span-6 flex flex-col gap-6">
             <GlassCard
               glowColor="gold"
               className="p-6 sm:p-7 bg-gradient-to-br from-[#1C0938] via-[#14062E] to-[#1F0A40]"
@@ -222,7 +223,7 @@ export const OfficesAndContact: React.FC<OfficesAndContactProps> = ({
               {/* Decorative background shape */}
               <div className="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-white/10 blur-xl pointer-events-none" />
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
